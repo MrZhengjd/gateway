@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="gateway" />
+        <module name="test" />
+        <module name="common" />
+        <module name="network" />
+        <module name="consumemodel" />
+        <module name="waitstart" />
+        <module name="gamelogic" />
+        <module name="redissiontest" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common" options="-parameters" />
+      <module name="consumemodel" options="-parameters" />
+      <module name="gamelogic" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="network" options="-parameters" />
+      <module name="redissiontest" options="-parameters" />
+      <module name="tcpgateway" options="" />
+      <module name="test" options="-parameters" />
+      <module name="waitstart" options="-parameters" />
+    </option>
+  </component>
+</project>
