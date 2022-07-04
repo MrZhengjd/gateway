@@ -2,7 +2,8 @@ package com.game.newwork.server;
 
 
 
-import com.game.common.relation.Constants;
+
+import com.game.domain.relation.Constants;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;

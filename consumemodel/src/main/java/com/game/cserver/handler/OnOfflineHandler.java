@@ -1,17 +1,15 @@
 package com.game.cserver.handler;
 
-import com.game.common.concurrent.PromiseUtil;
-import com.game.common.messagedispatch.GameDispatchService;
-import com.game.common.messagedispatch.GameMessageListener;
-import com.game.common.model.DtoMessage;
-import com.game.common.model.anno.DynamicRegisterGameService;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.dtoms.OfflineMessage;
-import com.game.common.model.dtoms.OnlineMessage;
-import com.game.common.model.msg.THeader;
+import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.cserver.config.CommonConsumeConfig;
 import com.game.cserver.find.FindPlayerIdProxy;
+import com.game.cserver.messagedispatch.GameDispatchService;
+import com.game.cserver.messagedispatch.GameMessageListener;
+import com.game.cserver.model.OfflineMessage;
+import com.game.cserver.model.OnlineMessage;
 import com.game.cserver.send.SendMessageModel;
+import com.game.domain.model.anno.GameMessage;
+import com.game.domain.model.msg.THeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

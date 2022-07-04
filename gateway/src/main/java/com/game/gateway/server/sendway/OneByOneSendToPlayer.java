@@ -2,12 +2,9 @@ package com.game.gateway.server.sendway;
 
 import com.game.common.annotation.BandKey;
 import com.game.common.constant.InfoConstant;
-import com.game.common.model.MessageSendType;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.vo.PlayerChannel;
-import com.game.gateway.server.ReceiverGameMessageResponseService;
+
+import com.game.domain.model.anno.GameMessage;
 import com.game.newwork.cache.ChannleMap;
-import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

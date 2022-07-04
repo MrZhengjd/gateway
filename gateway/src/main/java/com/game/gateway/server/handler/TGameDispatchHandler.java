@@ -1,30 +1,18 @@
 package com.game.gateway.server.handler;
 
-import com.game.common.cache.PlayerRoomService;
-import com.game.common.concurrent.LocalRunner;
-import com.game.common.constant.InfoConstant;
-import com.game.common.model.msg.*;
+import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.util.TopicUtil;
+import com.game.domain.cache.PlayerRoomService;
+import com.game.domain.model.anno.GameMessage;
 import com.game.gateway.config.GateWayConfig;
+import com.game.domain.model.msg.RequestMessageType;
+import com.game.domain.model.msg.ResponseVo;
 import com.game.newwork.cache.ChannleMap;
-import com.game.common.concurrent.IGameEventExecutorGroup;
 
-import com.game.common.flow.model.FastContextHolder;
-import com.game.common.flow.model.Response;
-import com.game.common.model.PlayerRequest;
-import com.game.common.model.anno.DefaultGameMessage;
-import com.game.common.model.anno.DynamicRegisterGameService;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.holder.RoomMap;
-import com.game.common.model.vo.MessageVo;
-import com.game.common.model.vo.PlayerChannel;
-import com.game.common.model.vo.TMessageVo;
 
 import com.game.common.redis.JsonRedisManager;
 
-import com.game.common.relation.room.Room;
-import com.game.common.relation.room.RoomManager;
-import com.game.common.relation.vo.RoomServerVo;
+
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.common.util.JWTUtil;
@@ -32,7 +20,6 @@ import com.game.common.util.NettyUtils;
 import com.game.gateway.model.DtoMessage;
 import com.game.newwork.server.handler.ConfirmHandler;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.concurrent.*;
@@ -40,8 +27,6 @@ import lombok.extern.log4j.Log4j2;
 //import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;

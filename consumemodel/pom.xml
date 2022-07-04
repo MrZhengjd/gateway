@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.game</groupId>
-            <artifactId>network</artifactId>
+            <artifactId>domain</artifactId>
             <version>1.0-SNAPSHOT</version>
 
         </dependency>

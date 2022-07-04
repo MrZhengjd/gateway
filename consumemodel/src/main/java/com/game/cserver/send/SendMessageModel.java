@@ -1,9 +1,11 @@
 package com.game.cserver.send;
 
 import com.game.common.constant.InfoConstant;
-import com.game.common.model.DtoMessage;
-import com.game.common.model.anno.GameMessage;
+//import com.game.common.model.DtoMessage;
+//import com.game.common.model.anno.GameMessage;
 import com.game.common.util.TopicUtil;
+import com.game.domain.model.DtoMessage;
+import com.game.domain.model.anno.GameMessage;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

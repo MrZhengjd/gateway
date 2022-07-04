@@ -2,15 +2,16 @@ package com.game.newwork.server.handler;
 
 
 
-import com.game.common.model.anno.DefaultGameMessage;
-import com.game.common.model.msg.THeader;
+
+import com.game.common.model.DefaultGameMessage;
+import com.game.domain.model.anno.GameMessage;
+import com.game.domain.model.msg.MessageType;
+import com.game.domain.model.msg.THeader;
+import com.game.domain.model.vo.PlayerChannel;
+import com.game.domain.relation.Constants;
 import com.game.newwork.cache.ChannleMap;
-import com.game.common.model.MessageType;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.msg.Message;
-import com.game.common.model.vo.PlayerChannel;
+
 import com.game.common.redis.JsonRedisManager;
-import com.game.common.relation.Constants;
 
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
@@ -139,8 +140,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
                 logger.info("here is error ------------");
                 e.printStackTrace();
                 if (e instanceof ExpiredJwtException){
-                    Message fail = Message.buildAuthResponse(2400,"out of date");
-                    ctx.writeAndFlush(fail);
+
                     ctx.close();
                 }else {
                     ctx.close();
@@ -179,8 +179,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
             Channel exist = playerChannel.getChannel();
             if (exist != null){
 //
-                Message message = Message.buildAuthResponse(2100,"differ channel error");
-                exist.writeAndFlush(message);
+
                 exist.close();
 
 

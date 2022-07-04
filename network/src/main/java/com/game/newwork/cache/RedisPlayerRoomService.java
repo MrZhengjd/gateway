@@ -1,12 +1,13 @@
 package com.game.newwork.cache;
 
 import com.game.common.cache.Operation;
-import com.game.common.cache.PlayerRoomService;
 import com.game.common.cache.ReadWriteLockOperate;
 import com.game.common.cache.ReturnOperate;
 import com.game.common.redis.JsonRedisManager;
-import com.game.common.relation.Constants;
-import com.game.common.relation.vo.RoomServerVo;
+
+import com.game.domain.cache.PlayerRoomService;
+import com.game.domain.relation.Constants;
+import com.game.domain.relation.vo.RoomServerVo;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.data.redis.core.RedisTemplate;
 //import org.springframework.data.redis.core.StringRedisTemplate;
@@ -36,7 +37,7 @@ public class RedisPlayerRoomService implements PlayerRoomService {
     public String getIncr(){
         return jsonRedisManager.get("task");
     }
-    private Map<Long,RoomServerVo> roomServerVoMap = new HashMap<>();
+    private Map<Long, RoomServerVo> roomServerVoMap = new HashMap<>();
     private ReadWriteLockOperate readWriteLockOperate = new ReadWriteLockOperate();
     @Override
     public RoomServerVo getByPlayerId(Long playerId) {

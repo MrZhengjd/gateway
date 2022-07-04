@@ -4,7 +4,7 @@ package com.game.common.walstore;
 import com.game.common.concurrent.IGameEventExecutorGroup;
 import com.game.common.eventcommand.LockQueueMediator;
 import com.game.common.eventcommand.UnLockQueueMediatorImpl;
-import com.game.common.model.msg.Message;
+//import com.game.common.model.msg.Message;
 import com.game.common.store.NamedThreadFactory;
 import com.game.common.store.TempResult;
 import io.netty.util.concurrent.DefaultEventExecutor;

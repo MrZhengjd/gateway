@@ -1,6 +1,6 @@
 package com.game.newwork.checkHu;
 
-import com.game.common.relation.organ.Organ;
+import com.game.domain.relation.organ.Organ;
 
 import java.util.ArrayList;
 import java.util.List;

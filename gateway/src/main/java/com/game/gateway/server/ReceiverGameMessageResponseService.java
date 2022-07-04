@@ -3,9 +3,10 @@ package com.game.gateway.server;
 import com.game.common.concurrent.NonResultLocalRunner;
 import com.game.common.concurrent.PromiseUtil;
 import com.game.common.constant.InfoConstant;
+import com.game.domain.model.anno.GameMessage;
 import com.game.gateway.server.sendway.SendToPlayerProxy;
 import com.game.newwork.cache.ChannleMap;
-import com.game.common.model.anno.GameMessage;
+//import com.game.common.model.anno.GameMessage;
 import com.game.gateway.model.DtoMessage;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;

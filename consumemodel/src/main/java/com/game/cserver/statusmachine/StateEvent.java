@@ -1,6 +1,7 @@
 package com.game.cserver.statusmachine;
 
-import com.game.common.relation.room.Room;
+
+import com.game.domain.relation.room.Room;
 
 /**
  * @author zheng

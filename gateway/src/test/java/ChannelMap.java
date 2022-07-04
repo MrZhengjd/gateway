@@ -2,8 +2,7 @@
 import com.game.common.cache.Operation;
 import com.game.common.cache.ReadWriteLockOperate;
 import com.game.common.cache.ReturnOperate;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.msg.Message;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 
@@ -27,60 +26,60 @@ public class ChannelMap {
         });
     }
 
-    public static void rotateSendMessage(Message message){
-        readWriteLockOperate.readLockOperation(new Operation() {
-            @Override
-            public void operate() {
-                for (Map.Entry<Integer , ChannelFuture> entry : channelMap.entrySet()){
-//                    message.getHeader().setServiceId(entry.getKey());
-                    try {
-//                        entry.getValue().channel().writeAndFlush(message).addListener(new GenericFutureListener<Future<? super Void>>() {
-//                            @Override
-//                            public void operationComplete(Future<? super Void> future) throws Exception {
-////                                if (!future.isSuccess()){
-////                                    System.out.println("fail to send message");
-////                                }
+//    public static void rotateSendMessage(Message message){
+//        readWriteLockOperate.readLockOperation(new Operation() {
+//            @Override
+//            public void operate() {
+//                for (Map.Entry<Integer , ChannelFuture> entry : channelMap.entrySet()){
+////                    message.getHeader().setServiceId(entry.getKey());
+//                    try {
+////                        entry.getValue().channel().writeAndFlush(message).addListener(new GenericFutureListener<Future<? super Void>>() {
+////                            @Override
+////                            public void operationComplete(Future<? super Void> future) throws Exception {
+//////                                if (!future.isSuccess()){
+//////                                    System.out.println("fail to send message");
+//////                                }
+////
+////                            }
+////                        });
+//                        batchWrite(entry.getValue().channel(),message);
 //
-//                            }
-//                        });
-                        batchWrite(entry.getValue().channel(),message);
-
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
-
-    }
-    public static void rotateSendMessage(GameMessage message){
-        readWriteLockOperate.readLockOperation(new Operation() {
-            @Override
-            public void operate() {
-                for (Map.Entry<Integer , ChannelFuture> entry : channelMap.entrySet()){
-//                    message.getHeader().setServiceId(entry.getKey());
-                    try {
-//                        entry.getValue().channel().writeAndFlush(message).addListener(new GenericFutureListener<Future<? super Void>>() {
-//                            @Override
-//                            public void operationComplete(Future<? super Void> future) throws Exception {
-////                                if (!future.isSuccess()){
-////                                    System.out.println("fail to send message");
-////                                }
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
 //
-//                            }
-//                        });
-                        batchWrite(entry.getValue().channel(),message);
-
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
-
-    }
+//                }
+//            }
+//        });
+//
+//    }
+//    public static void rotateSendMessage(GameMessage message){
+//        readWriteLockOperate.readLockOperation(new Operation() {
+//            @Override
+//            public void operate() {
+//                for (Map.Entry<Integer , ChannelFuture> entry : channelMap.entrySet()){
+////                    message.getHeader().setServiceId(entry.getKey());
+//                    try {
+////                        entry.getValue().channel().writeAndFlush(message).addListener(new GenericFutureListener<Future<? super Void>>() {
+////                            @Override
+////                            public void operationComplete(Future<? super Void> future) throws Exception {
+//////                                if (!future.isSuccess()){
+//////                                    System.out.println("fail to send message");
+//////                                }
+////
+////                            }
+////                        });
+//                        batchWrite(entry.getValue().channel(),message);
+//
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }
+//        });
+//
+//    }
     public static void batchWrite(Channel channel, Object message){
         for (int i = 0;i< 50;i++){
             channel.write(message);

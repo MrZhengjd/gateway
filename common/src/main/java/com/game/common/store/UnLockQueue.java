@@ -1,7 +1,7 @@
 package com.game.common.store;
 
 
-import com.game.common.model.msg.Message;
+//import com.game.common.model.msg.Message;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import io.netty.buffer.ByteBuf;
@@ -547,29 +547,29 @@ public class UnLockQueue {
 
 
 
-    public byte[] readyData(Message message) {
-        ByteBuf byteBuf = allocator.directBuffer();
-        message.writeToByteBuf(byteBuf,serialize);
-        int length = byteBuf.readableBytes();
-//        System.out.println("out readable bytes "+byteBuf.readableBytes());
-        if (length > 0) {
-//            System.out.println("here is coming ======================");
-            byte[] datas = new byte[length];
-            byteBuf.readBytes(datas);
-            byteBuf.release();
-            return datas;
-        }
-        byteBuf.release();
-        return null;
-    }
+//    public byte[] readyData(Message message) {
+//        ByteBuf byteBuf = allocator.directBuffer();
+//        message.writeToByteBuf(byteBuf,serialize);
+//        int length = byteBuf.readableBytes();
+////        System.out.println("out readable bytes "+byteBuf.readableBytes());
+//        if (length > 0) {
+////            System.out.println("here is coming ======================");
+//            byte[] datas = new byte[length];
+//            byteBuf.readBytes(datas);
+//            byteBuf.release();
+//            return datas;
+//        }
+//        byteBuf.release();
+//        return null;
+//    }
 
     public boolean write(byte[] data) {
         return offer(data);
     }
 
-    public boolean write(Message message) {
-        return offer(readyData(message));
-    }
+//    public boolean write(Message message) {
+//        return offer(readyData(message));
+//    }
 
 
 
@@ -838,53 +838,53 @@ public class UnLockQueue {
 //        return coming.get();
 //    }
 
-    public Message readDataToMessage(byte[] datas) {
-//        out.incrementAndGet();
-        if (datas == null) {
-//            empty.getAndIncrement();
-//                System.out.println("read null-----------------------------");
-            return null;
-        }
-        ByteBuf byteBuf = allocator.directBuffer();
-        try {
-            Message data = Message.read(datas, byteBuf);
-            byteBuf.release();
-            return data;
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-    public Message readDataToMessage(TempResult result) {
-//        out.incrementAndGet();
-        if (result == null){
-            return null;
-        }
-        byte[] datas = result.getDatas();
-        if (datas == null) {
-            empty.getAndIncrement();
-//                System.out.println("read null-----------------------------");
-            return null;
-        }
+//    public Message readDataToMessage(byte[] datas) {
+////        out.incrementAndGet();
+//        if (datas == null) {
+////            empty.getAndIncrement();
+////                System.out.println("read null-----------------------------");
+//            return null;
+//        }
 //        ByteBuf byteBuf = allocator.directBuffer();
-//        lock(parse);
-        try {
-            ByteBuf byteBuf = allocator.directBuffer(datas.length);
-            Message data = Message.read(datas, byteBuf);
-            byteBuf.release();
-
-            return data;
-        }catch (Exception e){
-            e.printStackTrace();
-            logger.info("reader position "+result.getReaderPosition());
-            return null;
-        }finally {
-            datas = null;
-//            unLock(parse);
-        }
-
-    }
+//        try {
+//            Message data = Message.read(datas, byteBuf);
+//            byteBuf.release();
+//            return data;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//    }
+//    public Message readDataToMessage(TempResult result) {
+////        out.incrementAndGet();
+//        if (result == null){
+//            return null;
+//        }
+//        byte[] datas = result.getDatas();
+//        if (datas == null) {
+//            empty.getAndIncrement();
+////                System.out.println("read null-----------------------------");
+//            return null;
+//        }
+////        ByteBuf byteBuf = allocator.directBuffer();
+////        lock(parse);
+//        try {
+//            ByteBuf byteBuf = allocator.directBuffer(datas.length);
+//            Message data = Message.read(datas, byteBuf);
+//            byteBuf.release();
+//
+//            return data;
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            logger.info("reader position "+result.getReaderPosition());
+//            return null;
+//        }finally {
+//            datas = null;
+////            unLock(parse);
+//        }
+//
+//    }
 
     public void sync() {
         writeSync = true;

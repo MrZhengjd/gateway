@@ -17,6 +17,7 @@
         <module>test</module>
         <module>gamelogic</module>
         <module>redissiontest</module>
+        <module>domain</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

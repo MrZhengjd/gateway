@@ -1,8 +1,6 @@
 package com.game.common.eventdispatch;
 
-import com.game.common.flow.model.Node;
-import com.game.common.model.PlayerRequest;
-import com.game.common.relation.organ.Organ;
+//import com.game.common.flow.model.Node;
 import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.Method;
@@ -96,64 +94,64 @@ public class EventAnnotationManager {
         }
 
     }
-    public void sendPlayerEvent(String eventName, Node node, PlayerRequest event){
-        if (node == null){
-            return;
-        }
-        Map<String, ListenerHandler> gameTypeMap = nameEventMapping.get(eventName);
-        ListenerHandler handler = gameTypeMap.get(node.getDesc());
-        if (handler == null){
-            throw new RuntimeException("cannot find the method with event name "+eventName+" method "+node.getDesc());
-        }
-        try {
+//    public void sendPlayerEvent(String eventName, Node node, PlayerRequest event){
+//        if (node == null){
+//            return;
+//        }
+//        Map<String, ListenerHandler> gameTypeMap = nameEventMapping.get(eventName);
+//        ListenerHandler handler = gameTypeMap.get(node.getDesc());
+//        if (handler == null){
+//            throw new RuntimeException("cannot find the method with event name "+eventName+" method "+node.getDesc());
+//        }
+//        try {
+//
+//            handler.getMethod().invoke(handler.getBean(),event);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            handler.getMethod().invoke(handler.getBean(),event);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendPlayerRoleEvent(Organ organ, String desc){
-        ListenerHandler handler = handler(organ,desc);
-        if (handler == null){
-            throw new RuntimeException("cannot find the method with event name "+organ+" method "+desc);
-        }
-        try {
-            handler.getMethod().invoke(handler.getBean(),organ);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private  ListenerHandler handler(Organ organ, String desc){
-        Map<String, ListenerHandler> gameTypeMap = nameEventMapping.get(organ.getClass().getName());
-        return gameTypeMap.get(desc);
-
-    }
-    public void sendPlayerRoleWithArgue(Organ organ, String desc,Object data){
-        ListenerHandler handler = handler(organ,desc);
-        if (handler == null){
-            throw new RuntimeException("cannot find the method with event name "+organ+" method "+desc);
-        }
-        try {
-//            organ.setInput(data);
-            handler.getMethod().invoke(handler.getBean(),organ,data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sendPlayerRoleWithArgues(Organ organ, String desc,Object... data){
-        ListenerHandler handler = handler(organ,desc);
-        if (handler == null){
-            throw new RuntimeException("cannot find the method with event name "+organ+" method "+desc);
-        }
-        try {
-//            organ.setInput(data);
-            handler.getMethod().invoke(handler.getBean(),organ,data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void sendPlayerRoleEvent(Organ organ, String desc){
+//        ListenerHandler handler = handler(organ,desc);
+//        if (handler == null){
+//            throw new RuntimeException("cannot find the method with event name "+organ+" method "+desc);
+//        }
+//        try {
+//            handler.getMethod().invoke(handler.getBean(),organ);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    private  ListenerHandler handler(Organ organ, String desc){
+//        Map<String, ListenerHandler> gameTypeMap = nameEventMapping.get(organ.getClass().getName());
+//        return gameTypeMap.get(desc);
+//
+//    }
+//    public void sendPlayerRoleWithArgue(Organ organ, String desc,Object data){
+//        ListenerHandler handler = handler(organ,desc);
+//        if (handler == null){
+//            throw new RuntimeException("cannot find the method with event name "+organ+" method "+desc);
+//        }
+//        try {
+////            organ.setInput(data);
+//            handler.getMethod().invoke(handler.getBean(),organ,data);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public void sendPlayerRoleWithArgues(Organ organ, String desc,Object... data){
+//        ListenerHandler handler = handler(organ,desc);
+//        if (handler == null){
+//            throw new RuntimeException("cannot find the method with event name "+organ+" method "+desc);
+//        }
+//        try {
+////            organ.setInput(data);
+//            handler.getMethod().invoke(handler.getBean(),organ,data);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 }

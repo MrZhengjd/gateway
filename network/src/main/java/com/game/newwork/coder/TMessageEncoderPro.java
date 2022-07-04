@@ -2,13 +2,11 @@ package com.game.newwork.coder;
 
 
 
-import com.game.common.model.anno.DefaultGameMessage;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.msg.ConstantValue;
-//import com.game.common.model.msg.GameMessageDto;
-import com.game.common.relation.Constants;
+
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
+import com.game.domain.model.anno.GameMessage;
+import com.game.domain.relation.Constants;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;

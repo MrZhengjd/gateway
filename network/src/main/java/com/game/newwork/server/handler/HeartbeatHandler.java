@@ -2,15 +2,14 @@ package com.game.newwork.server.handler;
 
 
 
-import com.game.common.model.MessageType;
-import com.game.common.model.msg.Message;
-import com.game.common.model.vo.MessageVo;
+import com.game.domain.model.anno.GameMessage;
+import com.game.domain.model.msg.MessageType;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
-public class HeartbeatHandler extends SimpleChannelInboundHandler<MessageVo> {
+public class HeartbeatHandler extends SimpleChannelInboundHandler<GameMessage> {
     private int idleCount = 0;
     private int heartBeatCount = 0;
     private int maxHeartbeatCount = 66;
@@ -35,10 +34,10 @@ public class HeartbeatHandler extends SimpleChannelInboundHandler<MessageVo> {
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MessageVo messageVo) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, GameMessage messageVo) throws Exception {
         if (messageVo.getHeader().getType() == MessageType.PING.getValue()){
-            Message response = Message.buildPongMessage(200,"success");
-            ctx.writeAndFlush(response);
+//            Message response = Message.buildPongMessage(200,"success");
+//            ctx.writeAndFlush(response);
             this.heartBeatCount ++;
             if (this.heartBeatCount > maxHeartbeatCount){
                 ctx.close();

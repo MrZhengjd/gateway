@@ -1,20 +1,17 @@
 
-import com.game.common.cache.Operation;
 import com.game.common.cache.ReadWriteLockOperate;
-import com.game.common.model.MessageType;
-import com.game.common.model.anno.ChuPaiMessage;
-import com.game.common.model.anno.DefaultGameMessage;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.msg.BaseChuPaiInfo;
-import com.game.common.model.msg.GameMessageDto;
-import com.game.common.model.msg.Message;
-import com.game.common.model.msg.THeader;
+import com.game.common.model.DefaultGameMessage;
 import com.game.common.util.JWTUtil;
+
+import com.game.domain.model.anno.GameMessage;
+import com.game.domain.model.msg.BaseChuPaiInfo;
+import com.game.domain.model.msg.MessageType;
+import com.game.domain.model.msg.THeader;
+import com.game.gateway.model.ChuPaiMessage;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

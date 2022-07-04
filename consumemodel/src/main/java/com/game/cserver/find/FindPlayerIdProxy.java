@@ -2,7 +2,8 @@ package com.game.cserver.find;
 
 import com.game.common.annotation.BandKey;
 import com.game.common.constant.InfoConstant;
-import com.game.common.model.msg.THeader;
+//import com.game.common.model.msg.THeader;
+import com.game.domain.model.msg.THeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;

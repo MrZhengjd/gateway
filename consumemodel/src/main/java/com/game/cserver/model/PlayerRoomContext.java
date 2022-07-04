@@ -1,7 +1,7 @@
 package com.game.cserver.model;
 
-import com.game.common.relation.role.PlayerRole;
-import com.game.common.relation.room.RoomManager;
+import com.game.domain.relation.role.PlayerRole;
+import com.game.domain.relation.room.RoomManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

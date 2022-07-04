@@ -1,6 +1,6 @@
 package com.game.cserver.model;
 
-import com.game.common.relation.organ.Organ;
+import com.game.domain.relation.organ.Organ;
 
 import java.util.HashMap;
 import java.util.Map;

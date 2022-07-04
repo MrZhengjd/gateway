@@ -1,7 +1,7 @@
 package com.game.newwork.server.handler;
 
 
-import com.game.common.model.msg.Message;
+import com.game.domain.model.anno.GameMessage;
 import com.google.common.util.concurrent.RateLimiter;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -9,7 +9,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RequestRateLimiterHandler extends SimpleChannelInboundHandler<Message> {
+public class RequestRateLimiterHandler extends SimpleChannelInboundHandler<GameMessage> {
     private static Logger logger = LoggerFactory.getLogger(RequestRateLimiterHandler.class);
     private RateLimiter rateLimiter;//限流器
     private static RateLimiter userRateLimiter;//用户限流器
@@ -23,7 +23,7 @@ public class RequestRateLimiterHandler extends SimpleChannelInboundHandler<Messa
 
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Message message) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, GameMessage message) throws Exception {
         if (!userRateLimiter.tryAcquire()){
             logger.info("so many user request");
             ctx.close();

@@ -11,9 +11,14 @@
 
     <artifactId>network</artifactId>
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>com.game</groupId>-->
+<!--            <artifactId>common</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.game</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>domain</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

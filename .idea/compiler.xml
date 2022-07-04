@@ -10,8 +10,9 @@
         <module name="test" />
         <module name="common" />
         <module name="network" />
-        <module name="consumemodel" />
         <module name="waitstart" />
+        <module name="consumemodel" />
+        <module name="domain" />
         <module name="gamelogic" />
         <module name="redissiontest" />
       </profile>
@@ -21,6 +22,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="common" options="-parameters" />
       <module name="consumemodel" options="-parameters" />
+      <module name="domain" options="-parameters" />
       <module name="gamelogic" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="network" options="-parameters" />

@@ -5,28 +5,29 @@ import com.game.common.concurrent.LocalRunner;
 import com.game.common.concurrent.NonResultLocalRunner;
 import com.game.common.concurrent.PromiseUtil;
 import com.game.common.constant.InfoConstant;
-import com.game.common.flow.model.FastContextHolder;
-import com.game.common.flow.model.FastRoomHolder;
-import com.game.common.messagedispatch.GameMessageDispatchService;
-import com.game.common.model.DtoMessage;
+
+import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.model.MessageSendType;
-import com.game.common.model.anno.DynamicRegisterGameService;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.msg.THeader;
 import com.game.common.redis.JsonRedisManager;
-import com.game.common.relation.CoreEngine;
-import com.game.common.relation.role.PlayerRole;
-import com.game.common.relation.room.Room;
-import com.game.common.relation.room.RoomManager;
+
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.common.util.TopicUtil;
 import com.game.common.walstore.UnLockWALQueueInstance;
 import com.game.cserver.find.FindPlayerIdProxy;
+import com.game.cserver.messagedispatch.GameMessageDispatchService;
 import com.game.cserver.model.FastPlayerRoomHolder;
 import com.game.cserver.model.PlayerRoomContext;
 import com.game.cserver.send.SendMessageModel;
-import com.game.newwork.cache.ChannleMap;
+import com.game.cserver.util.DtoMessageUtil;
+import com.game.domain.flow.model.FastContextHolder;
+import com.game.domain.model.DtoMessage;
+import com.game.domain.model.anno.GameMessage;
+import com.game.domain.model.msg.THeader;
+import com.game.domain.relation.role.PlayerRole;
+import com.game.domain.relation.room.Room;
+import com.game.domain.relation.room.RoomManager;
+//import com.game.newwork.cache.ChannleMap;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.Promise;
@@ -59,8 +60,8 @@ public class ConsumerModel {
     private DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
     @Autowired
     private JsonRedisManager jsonRedisManager;
-    @Resource
-    private ChannleMap channleMap;
+//    @Resource
+//    private ChannleMap channleMap;
 
     @Autowired
     private FindPlayerIdProxy proxy;
@@ -69,7 +70,7 @@ public class ConsumerModel {
     @Autowired
     private GameMessageDispatchService gameMessageDispatchService;
     public  void consumeMessage(ConsumerRecord<String, byte[]> record, NonResultLocalRunner localRunner){
-        GameMessage message = DtoMessage.readMessageHeader(record.value(),dynamicRegisterGameService);
+        GameMessage message = DtoMessageUtil.readMessageHeader(record.value(),dynamicRegisterGameService);
 
         PromiseUtil.safeExecuteNonResultWithoutExecutor(getKey(message),localRunner);
 //        PromiseUtil.safeExecute(gameEventExecutorGroup.selectByHash(key), localRunner,message);
@@ -97,10 +98,10 @@ public class ConsumerModel {
      * @param baseTopic
      */
     public void consumeModelOneByOne(ConsumerRecord<String,byte[]> record, LocalRunner<GameMessage> localRunner, String baseTopic){
-        GameMessage message = DtoMessage.readMessageHeader(record.value(),dynamicRegisterGameService);
-        message = dynamicRegisterGameService.getRequestInstanceByMessageId(message.getHeader().getServiceId());
-//        CoreEngine coreEngine = new CoreEngine();
-        oneByOneHandle(getKey(message),localRunner,message,baseTopic);
+//        GameMessage message = DtoMessageUtil.readMessageHeader(record.value(),dynamicRegisterGameService);
+//        message = dynamicRegisterGameService.getRequestInstanceByMessageId(message.getHeader().getServiceId());
+////        CoreEngine coreEngine = new CoreEngine();
+//        oneByOneHandle(getKey(message),localRunner,message,baseTopic);
 
     }
 
@@ -193,7 +194,7 @@ public class ConsumerModel {
      * @param baseTopic
      */
     public void consumeModelOneByManySameMessage(ConsumerRecord<String,byte[]> record, LocalRunner<GameMessage> localRunner, String baseTopic){
-        GameMessage message = DtoMessage.readMessageHeader(record.value(),dynamicRegisterGameService);
+        GameMessage message = DtoMessageUtil.readMessageHeader(record.value(),dynamicRegisterGameService);
 
 //        CoreEngine coreEngine = new CoreEngine();
 
@@ -298,7 +299,7 @@ public class ConsumerModel {
      * @param baseTopic
      */
     public void consumMessageByWithDiffer(ConsumerRecord<String,byte[]> record, LocalRunner<GameMessage> localRunner, String baseTopic){
-        GameMessage message = DtoMessage.readMessageHeader(record.value(),dynamicRegisterGameService);
+        GameMessage message = DtoMessageUtil.readMessageHeader(record.value(),dynamicRegisterGameService);
         PromiseUtil.safeExecuteWithKey(getKey(message),localRunner,message);
     }
 }

@@ -20,7 +20,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 //import org.springframework.cloud.config.server.EnableConfigServer;
 
 
-@SpringBootApplication(scanBasePackages = {"com.game.gateway","com.game.newwork","com.game.common"})
+@SpringBootApplication(scanBasePackages = {"com.game.gateway","com.game.newwork","com.game.common","com.game.domain"})
 //@EnableDiscoveryClient
 //@EnableConfigServer
 

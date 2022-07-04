@@ -1,7 +1,6 @@
 package com.game.common.store;
 
 
-import com.game.common.model.msg.Message;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -90,10 +89,10 @@ public class UnLockQueueInstance {
     public static UnLockQueueInstance INSTANCE = null;
     private String filePath = null;
 
-    public byte[] readyData(Message message) {
-//        message.getHeader().setSeqId(seqId.getAndIncrement());
-        return consumerQueue.readyData(message);
-    }
+//    public byte[] readyData(Message message) {
+////        message.getHeader().setSeqId(seqId.getAndIncrement());
+//        return consumerQueue.readyData(message);
+//    }
     public void writeMessge(byte[] datas){
         boolean write = consumerQueue.write(datas);
         if (write){
@@ -104,10 +103,10 @@ public class UnLockQueueInstance {
         comming.incrementAndGet();
     }
 
-    public void writeMessage(Message message) {
-//        System.out.println("here is seq id "+message.getHeader().getSeqId());
-        consumerQueue.write(message);
-    }
+//    public void writeMessage(Message message) {
+////        System.out.println("here is seq id "+message.getHeader().getSeqId());
+//        consumerQueue.write(message);
+//    }
 
     public long getReadSucessCount() {
         return readSucessCount.get();

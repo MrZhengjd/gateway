@@ -1,6 +1,7 @@
 package com.game.newwork.checkHu;
 
-import com.game.common.relation.pai.Pai;
+
+import com.game.domain.relation.pai.Pai;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -51,41 +51,45 @@
     <option name="importingSettings">
       <MavenImportingSettings>
         <option name="importAutomatically" value="true" />
+        <option name="jdkForImporter" value="1.8" />
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
       </MavenImportingSettings>
     </option>
   </component>
   <component name="ProjectId" id="29bWeH6GlbZi2elI7SWwzFEw0iA" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/redissiontest/src/main/resources" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/consumemodel/src/main/java/com/game/cserver/model" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.5010309" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.ignored.files" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.game.domain.model.anno" />
+      <recent name="lock.messageperthread" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\备份\tcpgateway\redissiontest\src\main\resources" />
-      <recent name="F:\备份\tcpgateway\common\src\main\resources\json" />
-      <recent name="F:\备份\tcpgateway\common\src\main\java\com\game\common" />
-      <recent name="F:\备份\tcpgateway\gamelogic\src\main\resources" />
-      <recent name="F:\备份\tcpgateway\common\src\main\java\com\game\common\generatot" />
-    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="hello.redisson" />
-      <recent name="hello" />
-      <recent name="test" />
-      <recent name="another" />
-      <recent name="another.redisson" />
+      <recent name="com.game.common.model" />
+      <recent name="com.game.common.eventdispatch" />
+      <recent name="com.game.waitstart.model" />
+      <recent name="com.game.gateway.model" />
+      <recent name="com.game.cserver.messagedispatch" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="lock.messageperthread" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\备份\tcpgateway\consumemodel\src\main\java\com\game\cserver\model" />
+      <recent name="F:\备份\tcpgateway\common\src\main\java\com\game\common\model" />
+      <recent name="F:\备份\tcpgateway\domain\src\main\java\com\game\domain" />
+      <recent name="F:\备份\tcpgateway\domain\src\main\java\com\game\domain\checkhu" />
+      <recent name="F:\备份\tcpgateway\domain\src\main\java\com\game" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -100,17 +104,17 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.TestApplication1 (1)">
-    <configuration name="TestDecorator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="decorator.TestDecorator" />
-      <module name="test" />
+  <component name="RunManager" selected="Spring Boot.GameLogicApplication">
+    <configuration name="BaseApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="network" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.newwork.BaseApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BaseApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="network" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.newwork.BaseApplication" />
+    <configuration name="GameLogicApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="gamelogic" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.gamelogic.GameLogicApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -169,11 +173,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.GameLogicApplication" />
         <item itemvalue="Spring Boot.TestApplication1 (1)" />
         <item itemvalue="Spring Boot.TestApplication" />
         <item itemvalue="Spring Boot.TestApplication1" />
         <item itemvalue="Spring Boot.TestApplication (1)" />
-        <item itemvalue="Application.TestDecorator" />
       </list>
     </recent_temporary>
   </component>
@@ -224,7 +228,10 @@
       <workItem from="1656466149904" duration="3870000" />
       <workItem from="1656552356660" duration="16799000" />
       <workItem from="1656638877889" duration="31898000" />
-      <workItem from="1656754744392" duration="3670000" />
+      <workItem from="1656754744392" duration="5565000" />
+      <workItem from="1656897488835" duration="9151000" />
+      <workItem from="1656906709063" duration="5905000" />
+      <workItem from="1656918082521" duration="6265000" />
     </task>
     <servers />
   </component>
@@ -249,27 +256,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/test/java/TestBatchConsumer.java</url>
-          <line>112</line>
+          <line>109</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/test/java/TestBatchConsumer.java</url>
-          <line>72</line>
+          <line>69</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/RegisterServiceComponent.java</url>
-          <line>49</line>
+          <line>46</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/PlayerInstanceService.java</url>
-          <line>103</line>
+          <line>104</line>
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/wait-start/src/main/java/com/game/waitstart/WaitStartApplicatioin.java</url>
-          <line>25</line>
+          <line>23</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -289,7 +296,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/test/java/TestConsumerQueue1.java</url>
-          <line>56</line>
+          <line>55</line>
           <option name="timeStamp" value="81" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -364,22 +371,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/wait-start/src/main/java/com/game/waitstart/consumer/ConsumerAndSendMessage.java</url>
-          <line>30</line>
+          <line>29</line>
           <option name="timeStamp" value="141" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/wait-start/src/main/java/com/game/waitstart/diamond/DismondService.java</url>
-          <line>28</line>
+          <line>29</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/cserver/send/SendMessageModel.java</url>
-          <line>28</line>
+          <line>30</line>
           <option name="timeStamp" value="145" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/ReceiverGameMessageResponseService.java</url>
-          <line>37</line>
+          <line>38</line>
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

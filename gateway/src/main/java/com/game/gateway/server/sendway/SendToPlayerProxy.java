@@ -2,11 +2,9 @@ package com.game.gateway.server.sendway;
 
 import com.game.common.annotation.BandKey;
 import com.game.common.constant.InfoConstant;
-import com.game.common.model.MessageSendType;
-import com.game.common.model.anno.GameMessage;
+import com.game.domain.model.anno.GameMessage;
 import com.game.newwork.cache.ChannleMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

@@ -3,15 +3,13 @@ package com.game.gateway.server.handler;
 import com.alibaba.nacos.api.annotation.NacosInjected;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
-import com.alibaba.nacos.api.naming.listener.NamingEvent;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.api.naming.pojo.ListView;
 import com.game.common.constant.InfoConstant;
-import com.game.common.model.vo.ServerVo;
+//import com.game.common.model.vo.ServerVo;
 import com.game.gateway.config.GateWayConfig;
+import com.game.domain.model.vo.ServerVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.event.HeartbeatEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author zheng

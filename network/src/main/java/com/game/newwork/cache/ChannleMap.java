@@ -4,7 +4,8 @@ package com.game.newwork.cache;
 import com.game.common.cache.Operation;
 import com.game.common.cache.ReadWriteLockOperate;
 import com.game.common.cache.ReturnOperate;
-import com.game.common.model.vo.PlayerChannel;
+//import com.game.common.model.vo.PlayerChannel;
+import com.game.domain.model.vo.PlayerChannel;
 import io.netty.channel.Channel;
 import org.springframework.stereotype.Service;
 

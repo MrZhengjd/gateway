@@ -1,14 +1,12 @@
 package com.game.gateway.model;
 
-import com.game.common.model.anno.DefaultGameMessage;
-import com.game.common.model.anno.GameMessage;
-import com.game.common.model.msg.Header;
-import com.game.common.model.msg.Message;
-import com.game.common.model.msg.THeader;
-import com.game.common.model.msg.TMessage;
-import com.game.common.model.vo.TMessageVo;
+
+import com.game.common.model.DefaultGameMessage;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
+import com.game.domain.model.anno.GameMessage;
+import com.game.domain.model.msg.THeader;
+import com.game.domain.model.vo.TMessageVo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;

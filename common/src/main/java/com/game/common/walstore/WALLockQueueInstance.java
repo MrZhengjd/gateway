@@ -1,7 +1,7 @@
 package com.game.common.walstore;
 
 
-import com.game.common.model.msg.Message;
+//import com.game.common.model.msg.Message;
 import com.game.common.store.NamedThreadFactory;
 import com.game.common.store.TempResult;
 import lombok.extern.slf4j.Slf4j;
@@ -78,9 +78,9 @@ public class WALLockQueueInstance {
     public WALReadWriteQueue getConsumerQueue() {
         return consumerQueue;
     }
-    public byte[] readyData(Message message) {
-        return consumerQueue.readyData(message);
-    }
+//    public byte[] readyData(Message message) {
+//        return consumerQueue.readyData(message);
+//    }
     public void setConsumerQueue(WALReadWriteQueue consumerQueue) {
         this.consumerQueue = consumerQueue;
     }
@@ -89,10 +89,10 @@ public class WALLockQueueInstance {
     public static WALLockQueueInstance INSTANCE = null;
     private String filePath = null;
 
-    public void writeMessage(Message message) {
-//        System.out.println("here is seq id "+message.getHeader().getSeqId());
-        consumerQueue.write(message);
-    }
+//    public void writeMessage(Message message) {
+////        System.out.println("here is seq id "+message.getHeader().getSeqId());
+//        consumerQueue.write(message);
+//    }
 
     public void writeMessge(byte[] datas){
         int write = consumerQueue.offerData1(datas);

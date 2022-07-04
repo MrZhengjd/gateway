@@ -3,10 +3,11 @@ package com.game.gateway.server.handler;
 import com.game.common.concurrent.IGameEventExecutorGroup;
 import com.game.common.concurrent.LocalRunner;
 import com.game.common.concurrent.PromiseUtil;
-import com.game.common.model.vo.ServerVo;
+
 import com.game.common.redis.JsonRedisManager;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
+import com.game.domain.model.vo.ServerVo;
 import io.netty.util.concurrent.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

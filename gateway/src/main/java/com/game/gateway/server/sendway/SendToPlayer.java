@@ -1,6 +1,6 @@
 package com.game.gateway.server.sendway;
 
-import com.game.common.model.anno.GameMessage;
+import com.game.domain.model.anno.GameMessage;
 import com.game.newwork.cache.ChannleMap;
 
 /**

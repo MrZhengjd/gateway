@@ -1,6 +1,5 @@
 
-import com.game.common.model.msg.Header;
-import com.game.common.model.msg.Message;
+
 import com.game.common.walstore.WALLockQueueInstance;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.Timeout;
@@ -36,24 +35,24 @@ public class TestConsumerQueue1 {
 //        AtomicLong count = new AtomicLong(0);
 //        AtomicLong use = new AtomicLong(0);
         CountDownLatch latch = new CountDownLatch(1);
-        Message message = new Message();
-        message.setHeader(Header.rpcResponseHeader());
-        message.setBody("welcome --------");
-
-//                    System.out.println("here is test -----------------");
-//        message.getHeader().setSeqId(seq.getAndIncrement());
-        instance.writeMessage(message);
+//        Message message = new Message();
+////        message.setHeader(Header.rpcResponseHeader());
+////        message.setBody("welcome --------");
+////
+//////                    System.out.println("here is test -----------------");
+//////        message.getHeader().setSeqId(seq.getAndIncrement());
+////        instance.writeMessage(message);
 //        instance.read();
         System.out.println("hereli       000000000000000");
-        for (int tem = 0 ;tem < 400;tem ++){
-//            Message message = new Message();
-//            message.setHeader(Header.rpcResponseHeader());
-            message.setBody("welcome --------");
-//                    System.out.println("here is test -----------------");
-//            message.getHeader().setSeqId(seq.getAndIncrement());
-            instance.writeMessage(message);
-//            count.incrementAndGet();
-        }
+//        for (int tem = 0 ;tem < 400;tem ++){
+////            Message message = new Message();
+////            message.setHeader(Header.rpcResponseHeader());
+//            message.setBody("welcome --------");
+////                    System.out.println("here is test -----------------");
+////            message.getHeader().setSeqId(seq.getAndIncrement());
+//            instance.writeMessage(message);
+////            count.incrementAndGet();
+//        }
         for (int i = 0;i< 401;i++){
 
             instance.read();

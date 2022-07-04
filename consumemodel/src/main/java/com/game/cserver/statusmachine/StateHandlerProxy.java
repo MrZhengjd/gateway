@@ -1,6 +1,7 @@
 package com.game.cserver.statusmachine;
 
-import com.game.common.relation.room.Room;
+
+import com.game.domain.relation.room.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

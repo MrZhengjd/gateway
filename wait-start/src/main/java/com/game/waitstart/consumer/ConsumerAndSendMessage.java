@@ -3,9 +3,8 @@ package com.game.waitstart.consumer;
 
 import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import com.game.common.constant.InfoConstant;
-import com.game.common.messagedispatch.GameMessageDispatchService;
-import com.game.common.model.anno.DynamicRegisterGameService;
 import com.game.cserver.consume.ConsumerModel;
+import com.game.cserver.messagedispatch.GameMessageDispatchService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;

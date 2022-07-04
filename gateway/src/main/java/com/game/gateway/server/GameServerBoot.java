@@ -8,15 +8,15 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.alibaba.nacos.client.naming.beat.BeatInfo;
 import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
-import com.game.common.cache.PlayerRoomService;
 import com.game.common.constant.InfoConstant;
+import com.game.common.eventdispatch.DynamicRegisterGameService;
+import com.game.domain.cache.PlayerRoomService;
 import com.game.gateway.config.GateWayConfig;
 import com.game.newwork.cache.ChannleMap;
 
 import com.game.newwork.coder.TMessageDecoderPro;
 import com.game.newwork.coder.TMessageEncoderPro;
 import com.game.common.concurrent.IGameEventExecutorGroup;
-import com.game.common.model.anno.DynamicRegisterGameService;
 
 import com.game.common.redis.JsonRedisManager;
 import com.game.newwork.server.NettyServer;

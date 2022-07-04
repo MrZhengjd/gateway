@@ -1,7 +1,6 @@
 package com.game.cserver.model;
 
-import com.game.common.relation.room.Room;
-import com.game.common.relation.room.RoomManager;
+
 import io.netty.util.concurrent.FastThreadLocal;
 
 public class FastPlayerRoomHolder {
