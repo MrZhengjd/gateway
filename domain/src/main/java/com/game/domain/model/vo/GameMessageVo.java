@@ -1,7 +1,7 @@
 package com.game.domain.model.vo;
 
 
-import com.game.domain.model.msg.THeader;
+import com.game.common.model.THeader;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

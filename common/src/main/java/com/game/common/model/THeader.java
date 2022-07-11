@@ -1,4 +1,4 @@
-package com.game.domain.model.msg;
+package com.game.common.model;
 
 import lombok.Getter;
 import lombok.Setter;

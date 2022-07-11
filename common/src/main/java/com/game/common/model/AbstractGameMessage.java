@@ -3,8 +3,7 @@ package com.game.common.model;
 
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
-import com.game.domain.model.anno.GameMessage;
-import com.game.domain.model.msg.THeader;
+
 
 
 /**
@@ -15,7 +14,7 @@ public abstract class AbstractGameMessage<T> implements GameMessage<T> {
     private T message;
 
     private byte[] data;
-    private static DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
+    private DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
 //    public static PooledByteBufAllocator allocator = PooledByteBufAllocator.DEFAULT;
     public AbstractGameMessage() {
         HeaderAnno headerAnno = this.getClass().getAnnotation(HeaderAnno.class);

@@ -3,7 +3,7 @@ package com.game.common.model;
 
 import com.game.common.eventdispatch.Event;
 
-import com.game.domain.model.msg.THeader;
+
 import io.netty.channel.ChannelHandlerContext;
 
 import java.util.HashMap;

@@ -1,15 +1,14 @@
 package com.game.common.eventdispatch;
 
 
-import com.game.common.model.AbstractGameMessage;
-import com.game.common.model.HeaderAnno;
-import com.game.common.model.MessageSendType;
-import com.game.common.model.MessageType;
-import com.game.domain.model.anno.GameMessage;
-import com.game.domain.model.msg.THeader;
+import com.game.common.model.*;
+
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -24,11 +23,11 @@ import java.util.Set;
 @Service
 public class DynamicRegisterGameService {
     private Map<String ,Class<? extends GameMessage>> gameHoldMap = new HashMap<>();
-    private static class Holder{
-        private static DynamicRegisterGameService INSTANCE = new DynamicRegisterGameService();
-    }
+//    private static class Holder{
+//        private static DynamicRegisterGameService INSTANCE = new DynamicRegisterGameService();
+//    }
     @Autowired
-    private ApplicationContext context;
+    private ConfigurableApplicationContext context;
 
 //    private DynamicRegisterGameService() {
 //    }
@@ -38,6 +37,7 @@ public class DynamicRegisterGameService {
 //    }
     @PostConstruct
     public void init(){
+
         Reflections reflections = new Reflections("com.game");
         Set<Class<? extends AbstractGameMessage>> classSet = reflections.getSubTypesOf(AbstractGameMessage.class);
         classSet.forEach(c -> {
@@ -50,6 +50,7 @@ public class DynamicRegisterGameService {
                 gameHoldMap.put(key, c);
             }
         });
+
 
 
 

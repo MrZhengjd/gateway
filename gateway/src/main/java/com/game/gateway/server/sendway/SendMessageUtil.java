@@ -1,9 +1,9 @@
 package com.game.gateway.server.sendway;
 
 
-import com.game.domain.model.anno.GameMessage;
-import com.game.domain.model.vo.PlayerChannel;
-import com.game.newwork.cache.ChannleMap;
+import com.game.common.model.GameMessage;
+import com.game.common.model.PlayerChannel;
+import com.game.network.cache.ChannleMap;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RoomManager {
     private Room room;
-    private JsonRedisManager jsonRedisManager;
+//    private JsonRedisManager jsonRedisManager;
     //定时刷新数据到缓存
     private ScheduledFuture<?> scheduledFuture;
 //    private volatile boolean startSaveRoom = false;
@@ -35,17 +35,17 @@ public class RoomManager {
     public Long getPlayingIndex(){
         return room.getPlayingIndex();
     }
-    public RoomManager(Room room, JsonRedisManager jsonRedisManager) {
-        this.room = room;
-        this.jsonRedisManager = jsonRedisManager;
-        executor = GameEventExecutorGroup.getInstance().select(room.getRoomNum());
-    }
-
     public RoomManager(Room room) {
         this.room = room;
+//        this.jsonRedisManager = jsonRedisManager;
         executor = GameEventExecutorGroup.getInstance().select(room.getRoomNum());
-
     }
+
+//    public RoomManager(Room room) {
+//        this.room = room;
+//        executor = GameEventExecutorGroup.getInstance().select(room.getRoomNum());
+//
+//    }
     public RoomManager(Room room, SaveRoomData saveRoomData) {
         this.room = room;
         this.saveRoomData = saveRoomData;

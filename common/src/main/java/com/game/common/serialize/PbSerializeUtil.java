@@ -44,6 +44,7 @@ public class PbSerializeUtil implements DataSerialize {
     @Override
     public <T> T deserialize(byte[] data, Class<T> cls) {
         try {
+
             T message = (T) objenesis.newInstance(cls);
             Schema<T> schema = getSchema(cls);
             ProtostuffIOUtil.mergeFrom(data, message, schema);

@@ -19,12 +19,12 @@ public class BackupTimeoutUtil {
         executor.schedule(new Runnable() {
             @Override
             public void run() {
-                if (!promise.isSuccess()){
+                if (!promise.isSuccess() ){
                     try {
                         promise.cancel(true);
 
                         promise.tryFailure(new TimeoutException("time out here "));
-                        log.info("time out cancel -------");
+                        log.info("time out cancel -------"+promise.cause());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

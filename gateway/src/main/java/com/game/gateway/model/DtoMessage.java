@@ -2,11 +2,10 @@ package com.game.gateway.model;
 
 
 import com.game.common.model.DefaultGameMessage;
+import com.game.common.model.GameMessage;
+import com.game.common.model.THeader;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
-import com.game.domain.model.anno.GameMessage;
-import com.game.domain.model.msg.THeader;
-import com.game.domain.model.vo.TMessageVo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
@@ -25,8 +24,6 @@ public class DtoMessage {
     private static DataSerialize serializeUtil = DataSerializeFactory.getInstance().getDefaultDataSerialize();
 
 
-    public DtoMessage(TMessageVo message) {
-    }
 
     public static byte[] serializeData(GameMessage gameMessage){
         ByteBuf byteBuf = allocator.directBuffer();

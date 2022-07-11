@@ -1,32 +1,31 @@
 package com.game.gateway.server.handler;
 
+import com.game.common.concurrent.LocalRunner;
+import com.game.common.concurrent.PromiseUtil;
+import com.game.common.constant.RequestMessageType;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
+import com.game.common.model.GameMessage;
+import com.game.common.util.MessageKeyUtil;
 import com.game.common.util.TopicUtil;
-import com.game.domain.cache.PlayerRoomService;
-import com.game.domain.model.anno.GameMessage;
+import com.game.domain.consume.SendMessageModel;
+import com.game.domain.playerinstance.PlayerInstance;
+import com.game.domain.playerinstance.PlayerInstanceModel;
 import com.game.gateway.config.GateWayConfig;
-import com.game.domain.model.msg.RequestMessageType;
-import com.game.domain.model.msg.ResponseVo;
-import com.game.newwork.cache.ChannleMap;
+import com.game.network.cache.ChannleMap;
 
 
-import com.game.common.redis.JsonRedisManager;
 
 
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.common.util.JWTUtil;
 import com.game.common.util.NettyUtils;
-import com.game.gateway.model.DtoMessage;
-import com.game.newwork.server.handler.ConfirmHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.concurrent.*;
 import lombok.extern.log4j.Log4j2;
 //import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -39,51 +38,42 @@ import java.util.concurrent.atomic.AtomicLong;
 //@ChannelHandler.Sharable
 @Log4j2
 public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessage> {
-    private DataSerialize serializeUtil = DataSerializeFactory.getInstance().getDefaultDataSerialize();
-    private JsonRedisManager jsonRedisManager;
-    private PlayerRoomService playerRoomService;
+//    private DataSerialize serializeUtil = DataSerializeFactory.getInstance().getDefaultDataSerialize();
+//    private JsonRedisManager jsonRedisManager;
     private DynamicRegisterGameService dynamicRegisterGameService;
-    private PlayerInstanceService playerInstanceService;
+    private PlayerInstanceModel playerInstanceModel;
+//    private PlayerInstanceService playerInstanceService;
     private GateWayConfig gateWayConfig;
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+    private SendMessageModel sendMessageModel;
+//    private KafkaTemplate<String, byte[]> kafkaTemplate;
     //jdk1.5 并发包中的用于计数的类
     public static AtomicInteger nConnection = new AtomicInteger();
     private ChannleMap channleMap;
     public static AtomicLong handleCount = new AtomicLong(0);
 //    private static GameStatusHandleMap gameStatusHandleMap
-    public TGameDispatchHandler(JsonRedisManager jsonRedisManager, ChannleMap channleMap) {
-        this.jsonRedisManager = jsonRedisManager;
+    public TGameDispatchHandler( ChannleMap channleMap) {
+
         this.channleMap = channleMap;
     }
 
 
-    public TGameDispatchHandler(JsonRedisManager jsonRedisManager, ChannleMap channleMap, PlayerRoomService playerRoomService) {
-        this.jsonRedisManager = jsonRedisManager;
-        this.channleMap = channleMap;
-        this.playerRoomService = playerRoomService;
 
-    }
-    public TGameDispatchHandler(JsonRedisManager jsonRedisManager, ChannleMap channleMap, PlayerRoomService playerRoomService,DynamicRegisterGameService dynamicRegisterGameService) {
-        this.jsonRedisManager = jsonRedisManager;
+    public TGameDispatchHandler( ChannleMap channleMap, DynamicRegisterGameService dynamicRegisterGameService) {
+
         this.channleMap = channleMap;
-        this.playerRoomService = playerRoomService;
+
         this.dynamicRegisterGameService = dynamicRegisterGameService;
     }
-    public TGameDispatchHandler(JsonRedisManager jsonRedisManager, ChannleMap channleMap, PlayerRoomService playerRoomService,DynamicRegisterGameService dynamicRegisterGameService,PlayerInstanceService playerInstanceService,KafkaTemplate<String, byte[]> kafkaTemplate,GateWayConfig gateWayConfig) {
-        this.jsonRedisManager = jsonRedisManager;
+    public TGameDispatchHandler( ChannleMap channleMap, DynamicRegisterGameService dynamicRegisterGameService,PlayerInstanceModel playerInstanceModel,SendMessageModel sendMessageModel,GateWayConfig gateWayConfig) {
         this.channleMap = channleMap;
-        this.playerRoomService = playerRoomService;
+
         this.dynamicRegisterGameService = dynamicRegisterGameService;
-        this.playerInstanceService = playerInstanceService;
-        this.kafkaTemplate = kafkaTemplate;
+        this.playerInstanceModel = playerInstanceModel;
+        this.sendMessageModel = sendMessageModel;
         this.gateWayConfig = gateWayConfig;
     }
     private JWTUtil.TokenBody tokenBody;
-    private ResponseVo result(Map<String ,Object> message){
 
-        ResponseVo responseVo = ResponseVo.success(message,"statusNotWright");
-        return responseVo;
-    }
     private void handleAndSendMessage( GameMessage gameMessage,ChannelHandlerContext ctx,Map<String ,Object> map){
         handleAndSendMessage(gameMessage,ctx,map);
     }
@@ -98,24 +88,41 @@ public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessag
      * @param moduleId
      * @param successHandler
      */
-    private void operateAfterSelectServer(ChannelHandlerContext ctx, Integer moduleId,SuccessHandler successHandler){
+    public void operateAfterSelectServer(ChannelHandlerContext ctx, Integer moduleId,SuccessHandler successHandler,GameMessage message){
 
         if (tokenBody == null) {// 如果首次通信，获取验证信息
             ConfirmHandler confirmHandler = (ConfirmHandler) ctx.channel().pipeline().get("confirmHandler");
             if (confirmHandler != null){
                 tokenBody = confirmHandler.getTokenBody();
+
             }
 
         }
+        message.getHeader().setPlayerId(tokenBody.getPlayerId());
+        Object key = MessageKeyUtil.getMessageKey(message);
+        Long playerId = message.getHeader().getPlayerId();
 //        ctx.fireChannelRead(message);
-        playerInstanceService.selectServerId(tokenBody.getPlayerId(),moduleId).addListener(new GenericFutureListener<Future<Integer>>() {
+        PromiseUtil.safeExecuteWithKey(key, new LocalRunner<Integer>() {
+            @Override
+            public void task(Promise promise, Integer object) {
+                Integer server = playerInstanceModel.selectServerId(playerId, moduleId);
+                if (server != null){
+                    promise.setSuccess(server);
+                }else {
+                    promise.setFailure(new RuntimeException("not found it"));
+                }
+            }
+        },null).addListener(new GenericFutureListener<Future<Integer>>() {
             @Override
             public void operationComplete(Future<Integer> future) throws Exception {
                 if (future.isSuccess()){
                     successHandler.successHandler(future);
+                }else {
+                    System.out.println("cannot found the serverId");
                 }
             }
         });
+
     }
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, GameMessage message) throws Exception {
@@ -123,10 +130,11 @@ public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessag
         operateAfterSelectServer(ctx,message.getHeader().getModuleId(), new SuccessHandler() {
             @Override
             public void successHandler(Future<Integer> future) {
-               readyAndSendMessage(future,message,ctx);
+                readyAndSendMessage(future,message,ctx);
+                ctx.fireChannelRead(message);
+
             }
-        });
-        ctx.fireChannelRead(message);
+        },message);
 
 
     }
@@ -137,7 +145,7 @@ public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessag
      * @param message
      * @param ctx
      */
-    private void readyAndSendMessage(Future<Integer> future,GameMessage message,ChannelHandlerContext ctx){
+    public void readyAndSendMessage(Future<Integer> future,GameMessage message,ChannelHandlerContext ctx){
         Integer toServerId = null;
         try {
             toServerId = future.get();
@@ -145,13 +153,10 @@ public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessag
             message.getHeader().setClientIp(NettyUtils.getRemoteIP(ctx.channel()));
 //
             message.getHeader().setTraceId(gateWayConfig.getServerId());
-            String topic = TopicUtil.generateTopic(playerInstanceService.getModuleName(message.getHeader().getModuleId()), toServerId);// 动态创建与业务服务交互的消息总线Topic
-//                    String topic = "gamemessage";
-            System.out.println("here is topic"+topic);
-            byte[] value = DtoMessage.serializeData(message);// 向消息总线服务发布客户端请求消息。
-
-            ProducerRecord<String, byte[]> record = new ProducerRecord<String, byte[]>(topic, String.valueOf(tokenBody.getPlayerId()), value);
-            kafkaTemplate.send(record);
+            Object key = MessageKeyUtil.getMessageKey(message);
+            String topic = TopicUtil.generateTopic(playerInstanceModel.getModuleName(message.getHeader().getModuleId()), toServerId);// 动态创建与业务服务交互的消息总线Topic
+//
+            sendMessageModel.sendMessageToMq(message,topic,key);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -176,25 +181,14 @@ public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessag
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
 //        super.channelActive(ctx);
         nConnection.getAndIncrement();
-        GameMessage online = dynamicRegisterGameService.getRequestInstanceByMessageId(RequestMessageType.ONLINE_MESSAGE);
-        operateAfterSelectServer(ctx, -1, new SuccessHandler() {
-            @Override
-            public void successHandler(Future<Integer> future) {
-                readyAndSendMessage(future,online,ctx);
-            }
-        });
+
+
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 //        super.channelInactive(ctx);
-        nConnection.getAndIncrement();
-        GameMessage offline = dynamicRegisterGameService.getRequestInstanceByMessageId(RequestMessageType.OFFLINE_MESSAGE);
-        operateAfterSelectServer(ctx, -1, new SuccessHandler() {
-            @Override
-            public void successHandler(Future<Integer> future) {
-                readyAndSendMessage(future,offline,ctx);
-            }
-        });
+       nConnection.getAndDecrement();
+
     }
 }

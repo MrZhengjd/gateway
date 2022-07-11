@@ -2,10 +2,9 @@ package com.game.domain.model;
 
 
 
+import com.game.common.model.GameMessage;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
-import com.game.domain.model.anno.GameMessage;
-import com.game.domain.model.msg.THeader;
 import com.game.domain.model.vo.TMessageVo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;

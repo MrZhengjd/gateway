@@ -1,38 +1,47 @@
 package com.game.gateway;
 
 
+import com.game.common.annotation.EnablePackage;
+import com.game.common.eventdispatch.DynamicRegisterGameService;
+import com.game.domain.registerservice.RegisterService;
+import com.game.gateway.config.GateWayConfig;
 import com.game.gateway.config.GatewayConstant;
 import com.game.gateway.server.handler.RegisterServiceComponent;
-import com.game.newwork.cache.RedisPlayerRoomService;
 import com.game.common.eventdispatch.EventAnnotationManager;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.gateway.server.GameServerBoot;
+import com.game.infrustructure.registerservice.RegisterServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.cloud.client.discovery.event.HeartbeatEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 
 //import com.game.chat.util.ConsulUtil;
 //import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 //import org.springframework.cloud.config.server.EnableConfigServer;
 
 
-@SpringBootApplication(scanBasePackages = {"com.game.gateway","com.game.newwork","com.game.common","com.game.domain"})
+@SpringBootApplication(scanBasePackages ="com.game")
 //@EnableDiscoveryClient
-//@EnableConfigServer
+
 
 public class GatewayApplication {
 
     public static void main(String[] args) {
 
-        ApplicationContext context = SpringApplication.run(GatewayApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(GatewayApplication.class, args);
 //        ApplicationContext context = SpringApplication.run(GatewayStarterApplication.class,args);
 //        IdGenerator idGenerator = IdGeneratorFactory.getDefaultGenerator();
-        RegisterServiceComponent bean = context.getBean(RegisterServiceComponent.class);
-        bean.autoRefreshData();
+//        RegisterServiceComponent bean = context.getBean(RegisterServiceComponent.class);
+//        bean.autoRefreshData();
+        GateWayConfig config = context.getBean(GateWayConfig.class);
+        RegisterService registerService = context.getBean(RegisterServiceImpl.class);
+        registerService.refreshData(config.getModules());
+//        DynamicRegisterGameService dynamicRegisterGameService = context.getBean(DynamicRegisterGameService.class);
+//        dynamicRegisterGameService.init();
         GameServerBoot boot = context.getBean(GameServerBoot.class);
 //        DefaultMQProducer producer = run.getBean(DefaultMQProducer.class);
 //        try {
@@ -40,27 +49,27 @@ public class GatewayApplication {
 //        } catch (MQClientException e) {
 //            e.printStackTrace();
 //        }
-        RedisPlayerRoomService service = context.getBean(RedisPlayerRoomService.class);
+//        RedisPlayerRoomService service = context.getBean(RedisPlayerRoomService.class);
 //        MqProduce produce = MqProduceFactory.getDefaultMqProduce();
 //        produce.start();
         String host = "127.0.0.1";
         int port = 12365;
         boot.startServer(host, port, GatewayConstant.GATE_WAY_MODULE);
-        EventAnnotationManager manager = new EventAnnotationManager();
-        manager.init(context);
-//        System.out.println("welcome-----------");
-        Long playerId = 0l;
-        Integer roomId = 100000;
-        DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
+//        EventAnnotationManager manager = new EventAnnotationManager();
+//        manager.init(context);
+////        System.out.println("welcome-----------");
+//        Long playerId = 0l;
+//        Integer roomId = 100000;
+//        DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
 //        CacheManager.saveData(service.getJsonRedisManager());
-        long timeMillis = System.currentTimeMillis();
-        byte[] info = service.getJsonRedisManager().getObjectHash1("test","first");
-        System.out.println("finist time info"+(System.currentTimeMillis() - timeMillis));
+//        long timeMillis = System.currentTimeMillis();
+//        byte[] info = service.getJsonRedisManager().getObjectHash1("test","first");
+//        System.out.println("finist time info"+(System.currentTimeMillis() - timeMillis));
 //        String result = dataSerialize.deserialize(info,String.class);
 //        System.out.println("finist time str"+(System.currentTimeMillis() - timeMillis));
 //        JSONObject data = dataSerialize.deserialize(info,JSONObject.class);
 //        Gson gson = dataSerialize.deserialize(info,Gson.class);
-        System.out.println("finist time "+(System.currentTimeMillis() - timeMillis));
+//        System.out.println("finist time "+(System.currentTimeMillis() - timeMillis));
 //        System.out.println("file name "+gson.get("fileName"));
 //        System.out.println(data);
 //        for (int i = 0;i < 100000;i++){

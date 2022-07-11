@@ -1,12 +1,13 @@
 
 import com.game.common.cache.ReadWriteLockOperate;
+import com.game.common.constant.RequestMessageType;
 import com.game.common.model.DefaultGameMessage;
+import com.game.common.model.GameMessage;
+import com.game.common.model.MessageType;
+import com.game.common.model.THeader;
 import com.game.common.util.JWTUtil;
 
-import com.game.domain.model.anno.GameMessage;
-import com.game.domain.model.msg.BaseChuPaiInfo;
-import com.game.domain.model.msg.MessageType;
-import com.game.domain.model.msg.THeader;
+import com.game.gateway.model.BaseChuPaiInfo;
 import com.game.gateway.model.ChuPaiMessage;
 import io.netty.channel.ChannelFuture;
 import io.netty.util.concurrent.Future;
@@ -83,7 +84,7 @@ public class TestBatchConsumer {
                                     chuPaiInfo.setPaiId(23);
                                     c.setHeader(new THeader(MessageType.SEND.value));
                                     c.getHeader().setModuleId(12);
-                                    c.getHeader().setServiceId(10001);
+                                    c.getHeader().setServiceId(RequestMessageType.OFFLINE_MESSAGE);
                                     c.getHeader().setDescribe("323");
                                     c.setMessageData(chuPaiInfo);
                                     channelFuture.channel().writeAndFlush(c).addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -92,9 +93,12 @@ public class TestBatchConsumer {
                                             if (future.isSuccess()){
                                                 System.out.println("send second time");
 
+                                            }else {
+                                                System.out.println("send message error"+future.cause());
                                             }
                                         }
                                     });
+                                    System.out.println("here is send data ");
 
                                 }else {
                                     System.out.println("cause "+future.cause());
@@ -108,23 +112,23 @@ public class TestBatchConsumer {
 
         }
         System.out.println("finish "+(System.currentTimeMillis() - timeMillis));
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+//        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 //        Message message = null;
         CountDownLatch latch = new CountDownLatch(1);
         AtomicInteger count = new AtomicInteger(0);
-        executorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                int inc = count.getAndIncrement();
-                if (inc > 100){
-                    executorService.shutdown();
-                    latch.countDown();
-
-                }
-
-//                ChannelMap.rotateSendMessage(gameMessage);
-            }
-        },10l,10l, TimeUnit.MILLISECONDS);
+//        executorService.scheduleAtFixedRate(new Runnable() {
+//            @Override
+//            public void run() {
+//                int inc = count.getAndIncrement();
+//                if (inc > 100){
+//                    executorService.shutdown();
+//                    latch.countDown();
+//
+//                }
+//
+////                ChannelMap.rotateSendMessage(gameMessage);
+//            }
+//        },10l,101l, TimeUnit.MILLISECONDS);
         latch.await(10,TimeUnit.SECONDS);
         System.exit(1);
 //        latch.await(10,TimeUnit.SECONDS);

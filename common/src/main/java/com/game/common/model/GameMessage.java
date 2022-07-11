@@ -1,7 +1,5 @@
-package com.game.domain.model.anno;
+package com.game.common.model;
 
-
-import com.game.domain.model.msg.THeader;
 
 /**
  * @author zheng

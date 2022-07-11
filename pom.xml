@@ -18,6 +18,8 @@
         <module>gamelogic</module>
         <module>redissiontest</module>
         <module>domain</module>
+        <module>infrastructure</module>
+        <module>application</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -42,6 +44,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
             <!--            <dependency>-->
             <!--                <groupId>org.alibaba.cloud</groupId>-->
             <!--                <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->

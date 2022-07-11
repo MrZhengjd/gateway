@@ -1,7 +1,13 @@
 package com.game.gamelogic.calscore;
 
 import com.game.common.constant.InfoConstant;
-import com.game.cserver.consume.ConsumerModel;
+
+import com.game.common.eventdispatch.DynamicRegisterGameService;
+import com.game.common.model.GameMessage;
+import com.game.consumemodel.util.DtoMessageUtil;
+import com.game.domain.consume.ConsumerModel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -15,8 +21,19 @@ import org.springframework.stereotype.Component;
 public class CalScoreCenter {
     @Autowired
     private ConsumerModel model;
+    @Autowired
+    private DynamicRegisterGameService dynamicRegisterGameService;
     @KafkaListener(topics = {"${game.calscore.name}" }, groupId = "test" )
     public void receiver(ConsumerRecord<String, byte[]> record, Acknowledgment acknowledgment) {
-        model.consumeMessageToDispatch(record, InfoConstant.GATEWAY_LOGIC_TOPIC,acknowledgment);
+        GameMessage message = DtoMessageUtil.readMessageHeader(record.value(),dynamicRegisterGameService);
+        model.consumeMessageToDispatch(message, InfoConstant.GATEWAY_LOGIC_TOPIC)
+        .addListener(new GenericFutureListener<Future<Boolean>>() {
+            @Override
+            public void operationComplete(Future<Boolean> future) throws Exception {
+                if (future.isSuccess()){
+                    acknowledgment.acknowledge();
+                }
+            }
+        });
     }
 }

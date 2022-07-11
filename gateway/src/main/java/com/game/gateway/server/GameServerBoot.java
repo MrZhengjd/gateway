@@ -1,36 +1,32 @@
 package com.game.gateway.server;
 
 
-import com.alibaba.nacos.api.annotation.NacosInjected;
 import com.alibaba.nacos.api.config.annotation.NacosValue;
-import com.alibaba.nacos.api.exception.NacosException;
-import com.alibaba.nacos.api.naming.NamingService;
-import com.alibaba.nacos.api.naming.pojo.Instance;
-import com.alibaba.nacos.client.naming.beat.BeatInfo;
 import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
-import com.game.common.constant.InfoConstant;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
-import com.game.domain.cache.PlayerRoomService;
+import com.game.domain.consume.SendMessageModel;
+import com.game.domain.playerinstance.PlayerInstance;
+import com.game.domain.playerinstance.PlayerInstanceModel;
+import com.game.domain.registerservice.RegisterService;
+import com.game.domain.repository.playerserver.PlayerServerRepository;
+import com.game.domain.repository.token.TokenRepository;
 import com.game.gateway.config.GateWayConfig;
-import com.game.newwork.cache.ChannleMap;
+import com.game.gateway.server.handler.ConfirmHandler;
+import com.game.network.cache.ChannleMap;
 
-import com.game.newwork.coder.TMessageDecoderPro;
-import com.game.newwork.coder.TMessageEncoderPro;
+import com.game.network.coder.TMessageDecoderPro;
+import com.game.network.coder.TMessageEncoderPro;
 import com.game.common.concurrent.IGameEventExecutorGroup;
 
-import com.game.common.redis.JsonRedisManager;
-import com.game.newwork.server.NettyServer;
-import com.game.newwork.server.handler.ConfirmHandler;
-import com.game.newwork.server.handler.HeartbeatHandler;
+import com.game.network.server.NettyServer;
+import com.game.network.server.handler.HeartbeatHandler;
 
-import com.game.gateway.server.handler.PlayerInstanceService;
 import com.game.gateway.server.handler.TGameDispatchHandler;
 import com.google.common.util.concurrent.RateLimiter;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,21 +38,32 @@ public class GameServerBoot {
     @Resource
     private ChannleMap channleMap;
 
-    @Resource
-    private JsonRedisManager jsonRedisManager;
+//    @Resource
+//    private JsonRedisManager jsonRedisManager;
 
-    @Resource
-    private PlayerRoomService playerRoomService;
+    @Autowired
+    private PlayerServerRepository playerServerRepository;
+    @Autowired
+    private PlayerInstance playerInstance;
 
-    @Resource
-    private PlayerInstanceService playerInstanceService;
+    @Autowired
+    private PlayerInstanceModel playerInstanceModel;
+
+    @Autowired
+    private TokenRepository tokenRepository;
+    @Autowired
+    private SendMessageModel sendMessageModel;
+
+    @Autowired
+    private RegisterService registerService;
+//    @Resource
+//    private PlayerInstanceService playerInstanceService;
 
     @Resource
     private DynamicRegisterGameService dynamicRegisterGameService;
-    @NacosInjected
-    private NamingService namingService;
-    @Autowired
-    private KafkaTemplate<String, byte[]> kafkaTemplate;
+
+//    @Autowired
+//    private KafkaTemplate<String, byte[]> kafkaTemplate;
 
     @Autowired
     private GateWayConfig gateWayConfig;
@@ -86,10 +93,10 @@ public class GameServerBoot {
             protected void initChannel(Channel channel) throws Exception {
                 channel.pipeline().addLast("encoder", new TMessageEncoderPro())
                         .addLast("decoder", new TMessageDecoderPro())
-                        .addLast("confirmHandler",new ConfirmHandler(channleMap,jsonRedisManager))
+                        .addLast("confirmHandler",new ConfirmHandler(channleMap,playerServerRepository,playerInstanceModel,tokenRepository))
 //                        .addLast("request limit",new RequestRateLimiterHandler(globalRateLimiter,100000))
                         .addLast(new IdleStateHandler(30, 12, 45))
-                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler(jsonRedisManager, channleMap, playerRoomService,dynamicRegisterGameService,playerInstanceService,kafkaTemplate,gateWayConfig))
+                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler(channleMap,dynamicRegisterGameService,playerInstanceModel,sendMessageModel,gateWayConfig))
                 ;
 //                        .addLast("heartbeart handler",new HeartbeatHandler());
 
@@ -97,7 +104,7 @@ public class GameServerBoot {
         };
         nettyServer.setServerBoot(nettyServer.serverBootstrap(initializer));
         nettyServer.start(host, port);
-        regist(gateWayConfig.getHost(),gateWayConfig.getPort(),gateWayConfig.getName(),gateWayConfig.getClusterName(),gateWayConfig.getModuleId(),gateWayConfig.getServerId());
+        registerService.registerServiceModule(gateWayConfig.getHost(),gateWayConfig.getPort(),gateWayConfig.getName(),gateWayConfig.getClusterName(),gateWayConfig.getModuleId(),gateWayConfig.getServerId());
     }
     private ChannelInitializer initializer(){
 //        TGameDispatchHandler gameDispatchHandler = new TGameDispatchHandler(jsonRedisManager, channleMap, playerRoomService,dynamicRegisterGameService,playerInstanceService,kafkaTemplate);
@@ -111,7 +118,7 @@ public class GameServerBoot {
 
                         .addLast(new IdleStateHandler(30, 12, 45))
                         .addLast("heartbeart handler",new HeartbeatHandler())
-                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler(jsonRedisManager, channleMap, playerRoomService,dynamicRegisterGameService,playerInstanceService,kafkaTemplate,gateWayConfig))
+                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler( channleMap,dynamicRegisterGameService,playerInstanceModel,sendMessageModel,gateWayConfig))
                 ;
 //
 
@@ -119,24 +126,7 @@ public class GameServerBoot {
         };
         return initializer;
     }
-    private void regist(String host, int port, String clusterName, String serviceName,Integer serviceId,Integer serverId){
-        try {
-            BeatInfo beatInfo = new BeatInfo();
-            Instance instance = new Instance();
-            instance.setIp(host);
-            instance.setPort(port);
-            instance.setClusterName(clusterName);
-            instance.setServiceName(serviceName);
-            instance.setEphemeral(true);
-            instance.getMetadata().put(InfoConstant.MODULE_ID,String.valueOf(serviceId));
-            instance.getMetadata().put(InfoConstant.SERVER_ID,String.valueOf(serverId));
-            namingService.registerInstance(clusterName,instance);
 
-            System.out.println("use cache "+useLocalCache);
-        } catch (NacosException e) {
-            e.printStackTrace();
-        }
-    }
     public void startServerMulti(String host, int port,String serviceName) {
         globalRateLimiter = RateLimiter.create(30000);
         ChannelInitializer initializer = initializer();

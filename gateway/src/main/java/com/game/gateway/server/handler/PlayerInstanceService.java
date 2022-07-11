@@ -4,10 +4,10 @@ import com.game.common.concurrent.IGameEventExecutorGroup;
 import com.game.common.concurrent.LocalRunner;
 import com.game.common.concurrent.PromiseUtil;
 
+import com.game.common.model.ServerVo;
 import com.game.common.redis.JsonRedisManager;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
-import com.game.domain.model.vo.ServerVo;
 import io.netty.util.concurrent.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,9 +51,9 @@ public class PlayerInstanceService {
     }
 
     public Promise<Integer> selectServerId(Long playerId,Integer moduleId){
-       return PromiseUtil.safeExecute(IGameEventExecutorGroup.getInstance().selectByHash(playerId), new LocalRunner<Void>() {
+        return PromiseUtil.safeExecuteWithKey(playerId, new LocalRunner() {
             @Override
-            public void task(Promise promise,Void ob) {
+            public void task(Promise promise, Object object) {
                 Map<Integer, Integer> map = playerUseServiceMap.get(playerId);
                 if (map == null) {
                     map = new ConcurrentHashMap<>();
@@ -93,12 +93,9 @@ public class PlayerInstanceService {
                     }
 
                 }
-
-
             }
+        },null);
 
-
-       },null);
     }
 
     private Integer selectServerIdAndSaveRedis(Long playerId, Integer moduleId) {
