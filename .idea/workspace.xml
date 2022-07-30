@@ -59,7 +59,7 @@
   <component name="ProjectId" id="29bWeH6GlbZi2elI7SWwzFEw0iA" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/consumemodel/src/main/java/com/game/cserver/model" />
+    <property name="last_opened_file_path" value="F:/Workspaces/myeclipse10/ntcp-web" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -67,29 +67,34 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.5010309" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.ignored.files" />
+    <property name="settings.editor.selected.configurable" value="project.propDebugger" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.game.domain.model.anno" />
-      <recent name="lock.messageperthread" />
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="com.game.common.model.TokenBody" />
+      <recent name="com.game.common.util.JWTUtil.TokenBody" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
     </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.game.common.model" />
-      <recent name="com.game.common.eventdispatch" />
-      <recent name="com.game.waitstart.model" />
+    <key name="CreateClassDialog.RecentsKey">
       <recent name="com.game.gateway.model" />
-      <recent name="com.game.cserver.messagedispatch" />
+      <recent name="com.game.domain.model.anno" />
+      <recent name="lock.messageperthread" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.game.domain.messagedispatch" />
+      <recent name="com.game.common.model" />
+      <recent name="com.game.diststore.service" />
+      <recent name="com.game.common.cache" />
+      <recent name="com.game.domain.model.msg" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\备份\tcpgateway\consumemodel\src\main\java\com\game\cserver\model" />
-      <recent name="F:\备份\tcpgateway\common\src\main\java\com\game\common\model" />
+      <recent name="F:\备份\tcpgateway\diststore\src\main\java\com\game\diststore\client" />
       <recent name="F:\备份\tcpgateway\domain\src\main\java\com\game\domain" />
-      <recent name="F:\备份\tcpgateway\domain\src\main\java\com\game\domain\checkhu" />
-      <recent name="F:\备份\tcpgateway\domain\src\main\java\com\game" />
+      <recent name="F:\备份\tcpgateway\network\src\main\java\com\game\network\client" />
+      <recent name="F:\备份\tcpgateway\diststore\src\main\resources" />
+      <recent name="F:\备份\tcpgateway\gateway\src\main\java\com\game\gateway" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -104,17 +109,45 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.GameLogicApplication">
-    <configuration name="BaseApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="network" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.newwork.BaseApplication" />
+  <component name="RunManager" selected="Application.SlaveApplication">
+    <configuration name="MasterApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.game.diststore.MasterApplication" />
+      <module name="diststore" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameLogicApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="gamelogic" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.gamelogic.GameLogicApplication" />
+    <configuration name="RecorderApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.game.diststore.RecorderApplication" />
+      <module name="diststore" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SlaveApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.game.diststore.SlaveApplication" />
+      <module name="diststore" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestIdGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="TestIdGenerator" />
+      <module name="diststore" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AuthStartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="auth" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.auth.AuthStartApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BaseApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="network" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.network.BaseApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -126,30 +159,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="test" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="another.TestApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="test" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="test.TestApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestApplication1 (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="redissiontest" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="hello.TestApplication1" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TestApplication1" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="test" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="test.TestApplication1" />
+    <configuration name="SlaveApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="diststore" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.game.diststore.SlaveApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -173,11 +185,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.GameLogicApplication" />
-        <item itemvalue="Spring Boot.TestApplication1 (1)" />
-        <item itemvalue="Spring Boot.TestApplication" />
-        <item itemvalue="Spring Boot.TestApplication1" />
-        <item itemvalue="Spring Boot.TestApplication (1)" />
+        <item itemvalue="Application.SlaveApplication" />
+        <item itemvalue="Application.MasterApplication" />
+        <item itemvalue="Application.RecorderApplication" />
+        <item itemvalue="Application.TestIdGenerator" />
+        <item itemvalue="Spring Boot.SlaveApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -231,7 +243,36 @@
       <workItem from="1656754744392" duration="5565000" />
       <workItem from="1656897488835" duration="9151000" />
       <workItem from="1656906709063" duration="5905000" />
-      <workItem from="1656918082521" duration="6265000" />
+      <workItem from="1656918082521" duration="10561000" />
+      <workItem from="1656984667229" duration="1467000" />
+      <workItem from="1656986460269" duration="3984000" />
+      <workItem from="1657004354321" duration="1238000" />
+      <workItem from="1657007837998" duration="1117000" />
+      <workItem from="1657014292761" duration="1393000" />
+      <workItem from="1657089552388" duration="5245000" />
+      <workItem from="1657164693573" duration="17822000" />
+      <workItem from="1657261040981" duration="16773000" />
+      <workItem from="1657335974977" duration="13029000" />
+      <workItem from="1657354965128" duration="12940000" />
+      <workItem from="1657376373890" duration="222000" />
+      <workItem from="1657504063367" duration="29767000" />
+      <workItem from="1657588942388" duration="19493000" />
+      <workItem from="1657675770479" duration="17158000" />
+      <workItem from="1657702260770" duration="9998000" />
+      <workItem from="1657762287533" duration="31742000" />
+      <workItem from="1657848428240" duration="32023000" />
+      <workItem from="1657940371131" duration="54183000" />
+      <workItem from="1658194393376" duration="14597000" />
+      <workItem from="1658219413024" duration="12793000" />
+      <workItem from="1658281196828" duration="11481000" />
+      <workItem from="1658367374259" duration="17394000" />
+      <workItem from="1658454055715" duration="13915000" />
+      <workItem from="1658545093907" duration="38921000" />
+      <workItem from="1658799219535" duration="21792000" />
+      <workItem from="1658885668898" duration="17083000" />
+      <workItem from="1658971790005" duration="8643000" />
+      <workItem from="1659058877898" duration="31308000" />
+      <workItem from="1659150570798" duration="7405000" />
     </task>
     <servers />
   </component>
@@ -255,29 +296,14 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/gateway/src/test/java/TestBatchConsumer.java</url>
-          <line>109</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/gateway/src/test/java/TestBatchConsumer.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/RegisterServiceComponent.java</url>
           <line>46</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/PlayerInstanceService.java</url>
-          <line>104</line>
+          <line>101</line>
           <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/wait-start/src/main/java/com/game/waitstart/WaitStartApplicatioin.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/walstore/WALReadWriteQueue.java</url>
@@ -306,63 +332,58 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/store/QueueBlock.java</url>
-          <line>1157</line>
+          <line>1185</line>
           <option name="timeStamp" value="102" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/store/QueueBlock.java</url>
-          <line>1170</line>
+          <line>1198</line>
           <option name="timeStamp" value="103" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/walstore/UnLockWALQueue.java</url>
-          <line>388</line>
+          <line>416</line>
           <option name="timeStamp" value="106" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/walstore/UnLockWALQueue.java</url>
-          <line>356</line>
+          <line>384</line>
           <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/walstore/UnLockWALQueue.java</url>
-          <line>373</line>
+          <line>401</line>
           <option name="timeStamp" value="112" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/walstore/UnLockWALQueue.java</url>
-          <line>502</line>
+          <line>531</line>
           <option name="timeStamp" value="113" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/store/QueueBlock.java</url>
-          <line>261</line>
+          <line>262</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/store/QueueBlock.java</url>
-          <line>258</line>
+          <line>259</line>
           <option name="timeStamp" value="117" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/store/QueueBlock.java</url>
-          <line>228</line>
+          <line>229</line>
           <option name="timeStamp" value="118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/store/QueueBlock.java</url>
-          <line>361</line>
+          <line>362</line>
           <option name="timeStamp" value="119" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/store/QueueBlock.java</url>
-          <line>1066</line>
+          <line>1094</line>
           <option name="timeStamp" value="131" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/eventcommand/UnLockQueueMediatorImpl.java</url>
-          <line>22</line>
-          <option name="timeStamp" value="138" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/walstore/UnLockWALQueueInstance.java</url>
@@ -370,23 +391,18 @@
           <option name="timeStamp" value="139" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/wait-start/src/main/java/com/game/waitstart/consumer/ConsumerAndSendMessage.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="141" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/wait-start/src/main/java/com/game/waitstart/diamond/DismondService.java</url>
-          <line>29</line>
+          <line>31</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/cserver/send/SendMessageModel.java</url>
+          <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/consumemodel/send/SendMessageModel.java</url>
           <line>30</line>
           <option name="timeStamp" value="145" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/ReceiverGameMessageResponseService.java</url>
-          <line>38</line>
+          <line>39</line>
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -398,6 +414,179 @@
           <url>file://$PROJECT_DIR$/test/src/main/java/another/TestApplication.java</url>
           <line>20</line>
           <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/TGameDispatchHandler.java</url>
+          <line>101</line>
+          <option name="timeStamp" value="153" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/test/java/TestBatchConsumer.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/test/java/TestBatchConsumer.java</url>
+          <line>131</line>
+          <option name="timeStamp" value="155" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/ConfirmHandler.java</url>
+          <line>200</line>
+          <option name="timeStamp" value="165" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/TGameDispatchHandler.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="192" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/TGameDispatchHandler.java</url>
+          <line>88</line>
+          <option name="timeStamp" value="193" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/ConfirmHandler.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="197" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/TGameDispatchHandler.java</url>
+          <line>123</line>
+          <option name="timeStamp" value="200" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/GatewayApplication.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="201" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/wait-start/src/main/java/com/game/waitstart/config/NacosWaitStartConfig.java</url>
+          <line>20</line>
+          <option name="timeStamp" value="204" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/consumemodel/handler/OnOfflineHandler.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="218" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/consumemodel/handler/OnOfflineHandler.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="220" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/consumemodel/find/FindPlayerIdProxy.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="221" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/consumemodel/find/FindPlayerIdProxy.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="223" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/auth/src/main/java/com/game/auth/controller/UserController.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="229" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/network/src/main/java/com/game/network/cache/ChannelMap.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="310" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/role/BaseRole.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="347" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/SlaveCopy.java</url>
+          <line>214</line>
+          <option name="timeStamp" value="464" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/gateway/src/main/java/com/game/gateway/server/handler/ConfirmHandler.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="528" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/ClientRequestHandler.java</url>
+          <line>87</line>
+          <option name="timeStamp" value="586" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/RecorderSupplyService.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="588" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/test/java/TestIdGenerator.java</url>
+          <line>17</line>
+          <option name="timeStamp" value="611" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/ClientRequestHandler.java</url>
+          <line>86</line>
+          <option name="timeStamp" value="634" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/WorkerSupplyService.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="658" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/eventcommand/UnLockQueueMediatorImpl.java</url>
+          <line>226</line>
+          <option name="timeStamp" value="671" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/SlaveCopy.java</url>
+          <line>122</line>
+          <option name="timeStamp" value="700" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/SlaveCopy.java</url>
+          <line>197</line>
+          <option name="timeStamp" value="701" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/SlaveCopy.java</url>
+          <line>183</line>
+          <option name="timeStamp" value="702" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/eventcommand/UnLockQueueMediatorImpl.java</url>
+          <line>235</line>
+          <option name="timeStamp" value="703" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/cache/MasterInfo.java</url>
+          <line>135</line>
+          <option name="timeStamp" value="705" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/SlaveApplication.java</url>
+          <line>34</line>
+          <option name="timeStamp" value="707" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/common/src/main/java/com/game/common/eventcommand/UnLockQueueMediatorImpl.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="708" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/diststore/src/main/java/com/game/diststore/service/SlaveCopy.java</url>
+          <line>78</line>
+          <option name="timeStamp" value="710" />
+        </line-breakpoint>
+        <line-breakpoint type="java-method">
+          <url>file://$PROJECT_DIR$/consumemodel/src/main/java/com/game/consumemodel/find/FindPlayerIdProxy.java</url>
+          <line>46</line>
+          <properties class="com.game.consumemodel.find.FindPlayerIdProxy" method="findPlayerIds">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="222" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -459,9 +648,94 @@
         <watch expression="chuPaiMessage.getData()" language="JAVA" />
         <watch expression="map" language="JAVA" />
         <watch expression="map.get(&quot;test&quot;)" language="JAVA" />
+        <watch expression="reflections.getTypesAnnotatedWith(HeaderAnno.class)" language="JAVA" />
+        <watch expression="reflections.getSubTypesOf(DefaultGameMessage.class)" language="JAVA" />
+        <watch expression="context.getBeansOfType(GameMessage.class)" language="JAVA" />
+        <watch expression="context.getBeansOfType(DefaultGameMessage.class)" language="JAVA" />
+        <watch expression="context.getBeansOfType(GameMessage.class)" language="JAVA" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.cserver.model.OnlineMessage" />
+        <watch expression="context.getBeansWithAnnotation(HeaderAnno.class)" language="JAVA" />
+        <watch expression="context.getBeansWithAnnotation(HeaderAnno.class)" language="JAVA" />
+        <watch expression="context.getParentBeanFactory().getBeanProvider(GameMessage.class)" language="JAVA" />
+        <watch expression="gameHoldMap" language="JAVA" />
+        <watch expression="context.getBeansOfType(GameMessage.class)" language="JAVA" />
+        <watch expression="beansOfType" language="JAVA" />
+        <watch expression="context.getBeansOfType(AbstractGameMessage.class)" language="JAVA" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.cserver.model.OnlineMessage" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.consumemodel.model.OnlineMessage" />
+        <watch expression="context.getBeansWithAnnotation(HeaderAnno.class)" language="JAVA" />
+        <watch expression="context.getBeansWithAnnotation(GameDispatchService.class)" language="JAVA" />
+        <watch expression="reflections.getSubTypesOf(GameMessage.class)" language="JAVA" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.consumemodel.model.OnlineMessage" />
+        <watch expression="context.getBeansWithAnnotation(EventDispatchService.class)" language="JAVA" />
+        <watch expression="run.getBean(OnOffLineCenter.class)" language="JAVA" custom="com.game.consumemodel.consume.OnOffLineCenter" />
+        <watch expression="scanne.findCandidateComponents)" language="JAVA" />
+        <watch expression="scanne.findCandidateComponents(basePackage)" language="JAVA" />
+        <watch expression="run.getBean(OnOffLineCenter.class)" language="JAVA" custom="com.game.consumemodel.consume.OnOffLineCenter" />
+        <watch expression="record.topic" language="JAVA" />
+        <watch expression="message.getHeader().getServerId()" language="JAVA" />
+        <watch expression="getKey(message)" language="JAVA" />
+        <watch expression="context.getBeansWithAnnotation(GameDispatchService.class).values()" language="JAVA" />
+        <watch expression="exchange.getRequest().getHeaders()" language="JAVA" />
+        <watch expression="exchange.getRequest().getHeaders()" language="JAVA" />
+        <watch expression="MessageKeyUtil.getMessageKey(message)" language="JAVA" />
+        <watch expression="nameEventMapping.get()" language="JAVA" />
+        <watch expression="organ.getHeader().getServiceId()+&quot;-&quot;+desc" language="JAVA" />
+        <watch expression="getBodyObjClass()" language="JAVA" />
+        <watch expression="ResponseVo.success(deserialize)" language="JAVA" />
+        <watch expression="ResponseVo.success(deserialize)" language="JAVA" />
+        <watch expression="DataSerializeFactory.getInstance().getDefaultDataSerialize().serialize(ResponseVo.success(deserialize))" language="JAVA" />
+        <watch expression="TopicUtil.generateTopic(host,port)" language="JAVA" />
+        <watch expression="message.getData()" language="JAVA" />
+        <watch expression="message.getData()" language="JAVA" />
+        <watch expression="message.getData()" language="JAVA" />
+        <watch expression="c.get" language="JAVA" />
       </configuration>
       <configuration name="Application">
         <watch expression="promise.isSuccess()" language="JAVA" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.consumemodel.model.OnlineMessage" />
+        <watch expression="context.getBeansOfType(AbstractGameMessage.class)" language="JAVA" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.consumemodel.model.OnlineMessage" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.consumemodel.model.OnlineMessage" />
+        <watch expression="context.getBean(OnlineMessage.class)" language="JAVA" custom="com.game.consumemodel.model.OnlineMessage" />
+        <watch expression="new AssignableTypeFilter(EnablePackage.class)" language="JAVA" />
+        <watch expression="scanne.findCandidateComponents(basePackage)" language="JAVA" />
+        <watch expression="scanne.findCandidateComponents(basePackage)" language="JAVA" />
+        <watch expression="scanne.findCandidateComponents(basePackage)" language="JAVA" />
+        <watch expression="scanne.findCandidateComponents(basePackage)" language="JAVA" />
+        <watch expression="scanne.findCandidateComponents(basePackage)" language="JAVA" />
+        <watch expression="message.getHeader().getModuleId()" language="JAVA" />
+        <watch expression="((AbstractBootstrap.PendingRegistrationPromise) channelFuture).channel" language="JAVA" custom="io.netty.bootstrap.AbstractBootstrap" />
+        <watch expression="fu." language="JAVA" />
+        <watch expression="result.getData()" language="JAVA" />
+        <watch expression="result.getMessage()" language="JAVA" />
+        <watch expression="result" language="JAVA" />
+        <watch expression="recordComponent.getSelectCount()" language="JAVA" />
+        <watch expression="nodeInfoMap" language="JAVA" />
+        <watch expression="getCurrentNode()" language="JAVA" />
+        <watch expression="ResponseVo.success(master)" language="JAVA" />
+        <watch expression="ResponseVo.success(master)" language="JAVA" />
+        <watch expression="MessageKeyUtil" language="JAVA" custom="com.game.common.util.MessageKeyUtil" />
+        <watch expression="MessageKeyUtil.getMessageKey(message)" language="JAVA" />
+        <watch expression="ResponseVo.success(master)" language="JAVA" />
+        <watch expression="DataSerializeFactory.getInstance().getDefaultDataSerialize().serialize(ResponseVo.success(master))" language="JAVA" />
+        <watch expression="MasterInfo.getPlayerId()" language="JAVA" />
+        <watch expression="System.currentTimeMillis()" language="JAVA" />
+        <watch expression="System.currentTimeMillis() - lastSelectTile" language="JAVA" />
+        <watch expression="masterChangeMap.subMap(0l, askMasterChangeRequest.getLastCopyId())" language="JAVA" />
+        <watch expression="getCurrentNode()" language="JAVA" />
+        <watch expression="askMasterChangeRequest.getLastCopyId()" language="JAVA" />
+        <watch expression="subMap.subMap(startKey,endKey)" language="JAVA" />
+        <watch expression="masterChangeMap.subMap(-1l, askMasterChangeRequest.getLastCopyId())" language="JAVA" />
+        <watch expression="askMasterChangeRequest.getLastCopyId()" language="JAVA" />
+        <watch expression="masterChangeMap.subMap(-1l,0l)" language="JAVA" />
+        <watch expression="masterChangeMap.subMap(0l,-1l)" language="JAVA" />
+        <watch expression="nodeInfo" language="JAVA" />
+        <watch expression="FastChannelInfo.getChannelInfo()" language="JAVA" />
+        <watch expression="lastCopyId &lt;copyInfo.getEndCopyId()" language="JAVA" />
+        <watch expression="copyInfo.getEndCopyId()" language="JAVA" />
+        <watch expression="desEvent.getEventId()" language="JAVA" />
+        <watch expression="mediator.getLatestOperateId()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

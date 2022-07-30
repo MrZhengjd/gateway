@@ -59,7 +59,18 @@ public class DynamicRegisterGameService {
 
         return getResponseByMessageIdFromOldHeader(header.getServiceId(),header);
     }
-
+    public GameMessage getDefaultRequest(Integer serviceId){
+        GameMessage gameMessage = new DefaultGameMessage();
+        gameMessage.getHeader().setType(MessageType.RPCREQUEST.value);
+        gameMessage.getHeader().setServiceId(serviceId);
+        return gameMessage;
+    }
+    public GameMessage getDefaultResponse(Integer serviceId){
+        GameMessage gameMessage = new DefaultResponseGameMessage();
+        gameMessage.getHeader().setType(MessageType.RPCRESPONSE.value);
+        gameMessage.getHeader().setServiceId(serviceId);
+        return gameMessage;
+    }
     /**
      * 通过请求头获得返回消息实体，并修改新的playerId
      * @param header
@@ -120,6 +131,8 @@ public class DynamicRegisterGameService {
 //            logger.error(msg, e);
             this.throwMetadataException(msg);
         }
+        gameMessage.getHeader().setServiceId(messageId);
+        gameMessage.getHeader().setType(messageType.value);
         return gameMessage;
     }
     private String getMessageClassCacheKey(MessageType type, int messageId) {

@@ -1,6 +1,7 @@
 package com.game.common.util;
 
 import com.game.common.model.GameMessage;
+import com.game.common.model.HeaderAnno;
 
 /**
  * @author zheng
@@ -11,6 +12,10 @@ public class MessageKeyUtil {
         if (message.getHeader().getAttribute() != null){
             key = message.getHeader().getAttribute();
         }
+        if (key == null){
+            key = 1;
+        }
         return key;
     }
+
 }

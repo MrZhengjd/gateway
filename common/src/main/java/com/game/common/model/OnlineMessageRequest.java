@@ -13,6 +13,6 @@ public class OnlineMessageRequest extends DefaultGameMessage {
 
     public OnlineMessageRequest() {
 
-        System.out.println("herei -----------");
+//        System.out.println("herei -----------");
     }
 }

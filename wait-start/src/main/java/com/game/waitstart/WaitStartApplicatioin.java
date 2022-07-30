@@ -5,6 +5,8 @@ import com.alibaba.nacos.api.annotation.NacosProperties;
 import com.alibaba.nacos.spring.context.annotation.config.EnableNacosConfig;
 import com.game.common.eventdispatch.EventAnnotationManager;
 import com.game.common.eventdispatch.EventAnnotationManager;
+import com.game.domain.registerservice.RegisterService;
+import com.game.infrustructure.registerservice.RegisterServiceImpl;
 import com.game.waitstart.config.NacosWaitStartConfig;
 import com.game.waitstart.nameserver.RegisterGameService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,10 +23,7 @@ public class WaitStartApplicatioin {
     public static void main(String[] args) {
         ConfigurableApplicationContext run = new SpringApplicationBuilder(WaitStartApplicatioin.class).run(args);
 //
-//        GameMessageDispatchService dispatchService = run.getBean(GameMessageDispatchService.class);
-//        dispatchService.init(run);
-        EventAnnotationManager manager = new EventAnnotationManager();
-        manager.init(run);
+
         RegisterGameService service = run.getBean(RegisterGameService.class);
         service.registerService();
         NacosWaitStartConfig waitStartConfig = run.getBean(NacosWaitStartConfig.class);

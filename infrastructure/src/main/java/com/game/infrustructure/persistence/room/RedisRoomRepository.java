@@ -1,11 +1,11 @@
 package com.game.infrustructure.persistence.room;
 
 import com.game.common.constant.InfoConstant;
-import com.game.common.redis.JsonRedisManager;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.domain.relation.room.Room;
 import com.game.domain.repository.room.RoomRepository;
+import com.game.infrustructure.redis.JsonRedisManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -60,7 +60,7 @@ public class PlayerRequest  extends Observable implements Event {
 
     public void organOperate(Class< ? extends Organ> organ, Object data){
         Organ dst = playerRole.getOrganMap().get(organ.getSimpleName());
-        playerRole.callEvent(dst,data);
+//        playerRole.callEvent(dst,data);
     }
 //    public void organOperateWithName(Class< ? extends Organ> organ,String name){
 //        Organ dst = playerRole.getOrganMap().get(organ.getSimpleName());

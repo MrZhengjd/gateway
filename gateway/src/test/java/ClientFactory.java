@@ -1,4 +1,5 @@
 
+import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.network.coder.TMessageDecoderPro;
 import com.game.network.coder.TMessageEncoderPro;
 import io.netty.bootstrap.Bootstrap;
@@ -23,7 +24,7 @@ public class ClientFactory {
 //    private IdleStateHandler stateHandler = new IdleStateHandler(60, 60, 100);
     private Bootstrap bootstrap;
     private ClientFactory() {
-        buildNewClient();
+//        buildNewClient();
     }
 
     public static ClientFactory getInstance(){
@@ -33,7 +34,7 @@ public class ClientFactory {
         private static ClientFactory INSTANCE = new ClientFactory();
     }
 
-    public Bootstrap buildNewClient(){
+    public Bootstrap buildNewClient(DynamicRegisterGameService dynamicRegisterGameService){
         if (this.bootstrap != null){
             return this.bootstrap;
         }
@@ -54,7 +55,7 @@ public class ClientFactory {
             protected void initChannel(SocketChannel socketChannel) throws Exception {
 
                 socketChannel.pipeline().addLast(new TMessageEncoderPro());
-                socketChannel.pipeline().addLast(new TMessageDecoderPro());
+                socketChannel.pipeline().addLast(new TMessageDecoderPro(dynamicRegisterGameService));
                 socketChannel.pipeline().addLast(new IdleStateHandler(10, 10, 10));
                 socketChannel.pipeline().addLast(new NettyClientHandler());
 
@@ -64,19 +65,19 @@ public class ClientFactory {
         return bootstrap;
     }
 
-    public ChannelFuture connect(String host, int port, int bindPort){
-        if (this.bootstrap == null){
-            this.bootstrap = buildNewClient();
-        }
-        bootstrap.bind(bindPort);
-        try {
-            return bootstrap.connect(host, port).sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
+//    public ChannelFuture connect(String host, int port, int bindPort){
+//        if (this.bootstrap == null){
+//            this.bootstrap = buildNewClient();
+//        }
+//        bootstrap.bind(bindPort);
+//        try {
+//            return bootstrap.connect(host, port).sync();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//    }
     public ChannelFuture connect(String host,int port,Bootstrap bootstrap,int sourcePort){
         if (this.bootstrap == null){
             System.out.println("bootstrap is empty ");

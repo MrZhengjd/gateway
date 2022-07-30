@@ -4,15 +4,15 @@ package com.game.gateway.server;
 import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
-import com.game.domain.consume.SendMessageModel;
+import com.game.domain.consumer.SendMessageModel;
 import com.game.domain.playerinstance.PlayerInstance;
-import com.game.domain.playerinstance.PlayerInstanceModel;
 import com.game.domain.registerservice.RegisterService;
 import com.game.domain.repository.playerserver.PlayerServerRepository;
 import com.game.domain.repository.token.TokenRepository;
 import com.game.gateway.config.GateWayConfig;
+import com.game.gateway.consume.PlayerInstanceModel;
 import com.game.gateway.server.handler.ConfirmHandler;
-import com.game.network.cache.ChannleMap;
+import com.game.network.cache.ChannelMap;
 
 import com.game.network.coder.TMessageDecoderPro;
 import com.game.network.coder.TMessageEncoderPro;
@@ -36,7 +36,7 @@ import javax.annotation.Resource;
 public class GameServerBoot {
 
     @Resource
-    private ChannleMap channleMap;
+    private ChannelMap channelMap;
 
 //    @Resource
 //    private JsonRedisManager jsonRedisManager;
@@ -80,6 +80,7 @@ public class GameServerBoot {
     @Resource
     private NettyServer nettyServer;
 
+
     private void startServer(String host, int port, ChannelInitializer initializer) {
         globalRateLimiter = RateLimiter.create(3000);
         nettyServer.serverBootstrap(initializer);
@@ -92,11 +93,11 @@ public class GameServerBoot {
             @Override
             protected void initChannel(Channel channel) throws Exception {
                 channel.pipeline().addLast("encoder", new TMessageEncoderPro())
-                        .addLast("decoder", new TMessageDecoderPro())
-                        .addLast("confirmHandler",new ConfirmHandler(channleMap,playerServerRepository,playerInstanceModel,tokenRepository))
+                        .addLast("decoder", new TMessageDecoderPro(dynamicRegisterGameService))
+                        .addLast("confirmHandler",new ConfirmHandler(channelMap,playerServerRepository,playerInstanceModel,tokenRepository))
 //                        .addLast("request limit",new RequestRateLimiterHandler(globalRateLimiter,100000))
                         .addLast(new IdleStateHandler(30, 12, 45))
-                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler(channleMap,dynamicRegisterGameService,playerInstanceModel,sendMessageModel,gateWayConfig))
+                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler(channelMap,dynamicRegisterGameService,playerInstanceModel,sendMessageModel,gateWayConfig))
                 ;
 //                        .addLast("heartbeart handler",new HeartbeatHandler());
 
@@ -112,13 +113,13 @@ public class GameServerBoot {
             @Override
             protected void initChannel(Channel channel) throws Exception {
                 channel.pipeline().addLast("encoder", new TMessageEncoderPro())
-                        .addLast("decoder", new TMessageDecoderPro())
+                        .addLast("decoder", new TMessageDecoderPro(dynamicRegisterGameService))
 //                        .addLast("confirmHandler",new ConfirmHandler(channleMap,jsonRedisManager))
 //                        .addLast("request limit",new RequestRateLimiterHandler(globalRateLimiter,100000))
 
                         .addLast(new IdleStateHandler(30, 12, 45))
                         .addLast("heartbeart handler",new HeartbeatHandler())
-                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler( channleMap,dynamicRegisterGameService,playerInstanceModel,sendMessageModel,gateWayConfig))
+                        .addLast(IGameEventExecutorGroup.getInstance(), new TGameDispatchHandler(channelMap,dynamicRegisterGameService,playerInstanceModel,sendMessageModel,gateWayConfig))
                 ;
 //
 

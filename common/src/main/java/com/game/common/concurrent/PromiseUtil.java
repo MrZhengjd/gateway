@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class PromiseUtil {
 
+    public static void safeExecuteNoResultByKey(Object key,NonResultLocalRunner localRunner){
+        safeExecuteNonResult(IGameEventExecutorGroup.getInstance().selectByHash(key),localRunner);
+    }
     public static void safeExecuteNonResult(EventExecutor executor, NonResultLocalRunner localRunner) {
         Promise promise = new DefaultPromise(executor);
         if (executor.inEventLoop()) {

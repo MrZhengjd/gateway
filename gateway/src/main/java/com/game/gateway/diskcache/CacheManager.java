@@ -1,7 +1,6 @@
 package com.game.gateway.diskcache;
 
 import com.alibaba.fastjson.JSONObject;
-import com.game.common.redis.JsonRedisManager;
 
 import java.util.Map;
 

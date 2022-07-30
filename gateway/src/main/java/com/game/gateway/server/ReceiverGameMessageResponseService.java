@@ -6,7 +6,7 @@ import com.game.common.constant.InfoConstant;
 import com.game.common.model.GameMessage;
 import com.game.common.util.MessageKeyUtil;
 import com.game.gateway.server.sendway.SendToPlayerProxy;
-import com.game.network.cache.ChannleMap;
+import com.game.network.cache.ChannelMap;
 //import com.game.common.model.anno.GameMessage;
 import com.game.gateway.model.DtoMessage;
 
@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 @Service
 public class ReceiverGameMessageResponseService {
     @Resource
-    private ChannleMap channleMap;
+    private ChannelMap channelMap;
 	private Logger logger = LoggerFactory.getLogger(ReceiverGameMessageResponseService.class);
 //	@Autowired
 //	private GatewayServerConfig gatewayServerConfig;
@@ -47,7 +47,7 @@ public class ReceiverGameMessageResponseService {
         PromiseUtil.safeExecuteNonResultWithoutExecutor(key, new NonResultLocalRunner() {
             @Override
             public void task() {
-                sendToPlayerProxy.sendMessage(message.getHeader().getSendWay(),message,channleMap);
+                sendToPlayerProxy.sendMessage(message.getHeader().getSendWay(),message, channelMap);
                 logger.info("receive data success ");
                 acknowledgment.acknowledge();
             }

@@ -4,7 +4,7 @@ package com.game.common.eventcommand;
  * @author zheng
  */
 public enum EventType {
-    DELETE((byte)2),CREATE((byte) 1);
+    DELETE((byte)2),CREATE((byte) 1),MODIFY((byte)3);
     private byte type;
 
     public byte getType() {

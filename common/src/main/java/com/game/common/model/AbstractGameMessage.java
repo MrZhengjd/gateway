@@ -37,8 +37,21 @@ public abstract class AbstractGameMessage<T> implements GameMessage<T> {
     }
 
     @Override
+    public T deserialzeToData(Class<T> t) {
+        try {
+            return  dataSerialize.deserialize(getData(),t);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public byte[] getData() {
-        if (data == null){
+        if (data == null && message == null){
+            message = (T) "hello";
+        }
+        if (data == null && message != null){
             data = dataSerialize.serialize(message);
         }
         return data;
@@ -60,7 +73,13 @@ public abstract class AbstractGameMessage<T> implements GameMessage<T> {
 
     @Override
     public T deserialzeToData() {
-        return dataSerialize.deserialize(data,getBodyObjClass());
+        try {
+            return dataSerialize.deserialize(getData(),getBodyObjClass());
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     public T getMessage() {
@@ -78,6 +97,7 @@ public abstract class AbstractGameMessage<T> implements GameMessage<T> {
         if (body != null){
             this.data = dataSerialize.serialize(body);
         }
+
 
     }
 

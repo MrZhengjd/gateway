@@ -1,8 +1,11 @@
 package com.game.domain.messagedispatch;
 
+import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.eventdispatch.ListenerHandler;
 import com.game.common.model.GameMessage;
 import com.game.common.model.HeaderAnno;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -21,14 +24,18 @@ import java.util.Map;
  */
 @Service
 public class GameMessageDispatchService {
+    private static Logger logger = LoggerFactory.getLogger(GameMessageDispatchService.class);
     private Map<String, List<ListenerHandler>> eventMapping = new HashMap<>();
     private Map<String, Map<String ,ListenerHandler>> nameEventMapping = new HashMap<>();
     @Autowired
     private ApplicationContext applicationContext;
     private Map<String ,Class> eventMap = new HashMap<>();
+    @Autowired
+    private DynamicRegisterGameService dynamicRegisterGameService;
     @PostConstruct
     public void init(){
         init(applicationContext);
+        init2(applicationContext);
     }
     public void init(ApplicationContext context){
         context.getBeansWithAnnotation(GameDispatchService.class).values().forEach(bean->{
@@ -41,7 +48,12 @@ public class GameMessageDispatchService {
                     HeaderAnno annotation = eventClass.getAnnotation(HeaderAnno.class);
                     if (annotation != null ){
                         ListenerHandler mapping = new ListenerHandler(bean,method);
-                        addEventListenerMapping(String.valueOf(annotation.serviceId()),mapping,annotation.serviceId()+"-"+listener.name());
+                        String base =String.valueOf(annotation.serviceId())+"-"+annotation.messageType().value;
+                        String temp = base;
+                        if (!listener.name().equals("")){
+                            temp =annotation.serviceId()+"-"+listener.name();
+                        }
+                        addEventListenerMapping(base,mapping,temp);
                         eventMap.put(eventClass.getName(),listener.value());
                     }
 
@@ -50,15 +62,45 @@ public class GameMessageDispatchService {
             }
         });
     }
+    public void init2(ApplicationContext context){
+        context.getBeansWithAnnotation(GameDispatchService.class).values().forEach(bean->{
+            Method[] methods = bean.getClass().getMethods();
+            String baseName = bean.getClass().getSimpleName();
+            for (Method method : methods){
+                GameMessageDispatch listener = method.getAnnotation(GameMessageDispatch.class);
+                if (listener != null && listener.onUsed().equals("true")){
+                    HeaderAnno eventClass = listener.value();
+
+                    if (eventClass != null ){
+                        ListenerHandler mapping = new ListenerHandler(bean,method);
+                        String base =String.valueOf(eventClass.serviceId())+"-"+eventClass.messageType().value;
+                        String temp = base;
+                        if (!listener.name().equals("")){
+                            temp =eventClass.serviceId()+"-"+listener.name();
+                        }
+                        addEventListenerMapping(base,mapping,temp);
+//                        eventMap.put(eventClass.getName(),listener.value());
+                    }
+
+
+                }
+            }
+        });
+    }
     private  ListenerHandler handler(GameMessage organ, String desc){
-        Map<String, ListenerHandler> gameTypeMap = nameEventMapping.get(String.valueOf(organ.getHeader().getServiceId()));
-        if (gameTypeMap == null){
-            throw new RuntimeException("don't have correct response handler");
+        String  tem = String.valueOf(organ.getHeader().getServiceId()+"-"+organ.getHeader().getType());
+        if (desc != null && !desc.equals("")){
+            tem= tem+"-"+desc;
         }
-        return gameTypeMap.get(organ.getHeader().getServiceId()+"-"+desc);
+        Map<String, ListenerHandler> gameTypeMap = nameEventMapping.get(tem);
+        if (gameTypeMap == null){
+            throw new RuntimeException("don't have correct response handler"+organ.getHeader().getServiceId() + " type "+organ.getHeader().getType());
+        }
+        return gameTypeMap.get(tem);
 
     }
     public void sendGameMessage(GameMessage gameMessage) throws InvocationTargetException, IllegalAccessException {
+
         sendGameMessage(gameMessage,gameMessage.getHeader().getDescribe());
     }
     public void sendGameMessage(GameMessage gameMessage, String desc) throws InvocationTargetException, IllegalAccessException {
@@ -66,7 +108,21 @@ public class GameMessageDispatchService {
         if (handler == null){
             throw new RuntimeException("cannot find the method with event name "+gameMessage+" method "+desc);
         }
-        handler.getMethod().invoke(handler.getBean(),gameMessage);
+        try {
+            handler.getMethod().invoke(handler.getBean(),gameMessage);
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("error here "+gameMessage.getHeader().getServiceId());
+        }
+
+    }
+    public void sendGameMessage(GameMessage gameMessage, String desc,Class data) throws InvocationTargetException, IllegalAccessException {
+        ListenerHandler handler = handler(gameMessage,desc);
+        if (handler == null){
+            throw new RuntimeException("cannot find the method with event name "+gameMessage+" method "+desc);
+        }
+//        Object o = gameMessage.deserialzeToData(data);
+        handler.getMethod().invoke(handler.getBean(),gameMessage.deserialzeToData(data));
     }
     /**
      * 添加注册事件

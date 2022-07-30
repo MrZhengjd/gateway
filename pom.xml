@@ -20,6 +20,9 @@
         <module>domain</module>
         <module>infrastructure</module>
         <module>application</module>
+        <module>auth</module>
+        <module>webgateway</module>
+        <module>diststore</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -3,10 +3,9 @@ package com.game.gateway.server.handler;
 import com.game.common.concurrent.LocalRunner;
 import com.game.common.concurrent.PromiseUtil;
 import com.game.common.model.GameMessage;
-import com.game.common.util.JWTUtil;
+import com.game.common.model.TokenBody;
 import com.game.common.util.MessageKeyUtil;
-import com.game.domain.playerinstance.PlayerInstance;
-import com.game.domain.playerinstance.PlayerInstanceModel;
+import com.game.gateway.consume.PlayerInstanceModel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -22,7 +21,7 @@ public class SendMessageUtil {
      * @param moduleId
      * @param successHandler
      */
-    public static void operateAfterSelectServer(JWTUtil.TokenBody tokenBody, ChannelHandlerContext ctx, Integer moduleId, SuccessHandler successHandler, GameMessage message, PlayerInstanceModel playerInstanceModel){
+    public static void operateAfterSelectServer(TokenBody tokenBody, ChannelHandlerContext ctx, Integer moduleId, SuccessHandler successHandler, GameMessage message, PlayerInstanceModel playerInstanceModel){
 
         if (tokenBody == null) {// 如果首次通信，获取验证信息
             ConfirmHandler confirmHandler = (ConfirmHandler) ctx.channel().pipeline().get("confirmHandler");

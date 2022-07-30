@@ -4,8 +4,8 @@ import com.game.common.constant.InfoConstant;
 
 import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.model.GameMessage;
+import com.game.consumemodel.consume.ConsumerModel;
 import com.game.consumemodel.util.DtoMessageUtil;
-import com.game.domain.consume.ConsumerModel;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -1,6 +1,8 @@
 package com.game.common.model;
 
 import io.netty.channel.Channel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 import java.io.Serializable;
 
@@ -24,13 +26,6 @@ public class PlayerChannel implements Serializable {
         this.channel = channel;
     }
 
-    //    private Channel channel;
-
-//    public PlayerChannel(Long playerId, Channel channel) {
-//        this.playerId = playerId;
-//        this.channel = channel;
-//    }
-
     public PlayerChannel() {
     }
 
@@ -42,11 +37,14 @@ public class PlayerChannel implements Serializable {
         this.playerId = playerId;
     }
 
-//    public Channel getChannel() {
-//        return channel;
-//    }
-//
-//    public void setChannel(Channel channel) {
-//        this.channel = channel;
-//    }
+    public void writeMessage(GameMessage gameMessage){
+        channel.writeAndFlush(gameMessage).addListener(new GenericFutureListener<Future<? super Void>>() {
+            @Override
+            public void operationComplete(Future<? super Void> future) throws Exception {
+                if (future.isSuccess()){
+//                    System.out.println("seccess send message ");
+                }
+            }
+        });
+    }
 }

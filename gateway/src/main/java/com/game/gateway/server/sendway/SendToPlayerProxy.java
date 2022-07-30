@@ -3,7 +3,7 @@ package com.game.gateway.server.sendway;
 import com.game.common.annotation.BandKey;
 import com.game.common.constant.InfoConstant;
 import com.game.common.model.GameMessage;
-import com.game.network.cache.ChannleMap;
+import com.game.network.cache.ChannelMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -33,10 +33,10 @@ public class SendToPlayerProxy {
     public SendToPlayer getByKey(Integer key){
         return sendToPlayerMap.get(InfoConstant.SEND_TO_PLAYER_PREFIX+key);
     }
-    public void sendMessage(Integer key, GameMessage message, ChannleMap channleMap){
+    public void sendMessage(Integer key, GameMessage message, ChannelMap channelMap){
         SendToPlayer sendToPlayer = getByKey(key);
         if (sendToPlayer != null){
-            sendToPlayer.sendToPlayer(message,channleMap);
+            sendToPlayer.sendToPlayer(message, channelMap);
         }
 
     }

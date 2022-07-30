@@ -1,5 +1,6 @@
 package com.game.common.store;
 
+import com.game.common.model.ReadBlockInfo;
 import com.sun.org.apache.bcel.internal.generic.FADD;
 import io.netty.util.concurrent.EventExecutor;
 import org.slf4j.Logger;
@@ -753,6 +754,18 @@ public class QueueBlock {
         mappedByteBuffer.position(writerIndex.getWriterPosition());
         mappedByteBuffer.putInt(END);
     }
+    public void initReaderIndex(){
+        readerIndex.setReadPosition(0);
+    }
+    public byte[] readWithIndex(){
+        return read(readerIndex.getReadPosition());
+    }
+
+    /**
+     * 获取文件中某个位置的信息
+     * @param readPosition
+     * @return
+     */
     public byte[] read(int readPosition){
         byte[] datas;
         mappedByteBuffer.position(readPosition);
@@ -764,6 +777,21 @@ public class QueueBlock {
         mappedByteBuffer.get(datas);
         readerIndex.setReadPosition(readPosition + dataLength + 4);
         return datas;
+    }
+    public ReadBlockInfo readBlockInfo(int readPosition){
+        byte[] datas;
+        mappedByteBuffer.position(readPosition);
+        int dataLength = mappedByteBuffer.getInt();
+        if (dataLength <= 0){
+            return null;
+        }
+        ReadBlockInfo readBlockInfo = new ReadBlockInfo();
+        datas = new byte[dataLength];
+        mappedByteBuffer.get(datas);
+        readerIndex.setReadPosition(readPosition + dataLength + 4);
+        readBlockInfo.setData(datas);
+        readBlockInfo.setEndReadPosition(readerIndex.getReadPosition());
+        return readBlockInfo;
     }
 
     /**

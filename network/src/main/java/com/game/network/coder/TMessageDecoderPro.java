@@ -1,10 +1,11 @@
 package com.game.network.coder;
 
 
+import com.game.common.cache.MasterInfo;
 import com.game.common.constant.Constants;
-import com.game.common.model.DefaultGameMessage;
-import com.game.common.model.GameMessage;
-import com.game.common.model.THeader;
+import com.game.common.constant.RequestMessageType;
+import com.game.common.eventdispatch.DynamicRegisterGameService;
+import com.game.common.model.*;
 import com.game.common.serialize.*;
 import com.game.common.util.IncommingCount;
 
@@ -23,6 +24,12 @@ public class TMessageDecoderPro extends ByteToMessageDecoder {
     private DataSerialize serializeUtil = DataSerializeFactory.getInstance().getDefaultDataSerialize();
     private final static int HEADER_LENGTH = 16;
     private final static int MAX_LENGTH = 65535;
+    private DynamicRegisterGameService dynamicRegisterGameService;
+
+//    private static MasterI
+    public TMessageDecoderPro(DynamicRegisterGameService dynamicRegisterGameService) {
+        this.dynamicRegisterGameService = dynamicRegisterGameService;
+    }
 
     public TMessageDecoderPro() {
     }
@@ -74,8 +81,24 @@ public class TMessageDecoderPro extends ByteToMessageDecoder {
             byte[] data = new byte[bodyLength];
             in.readBytes(data);
 //
-            GameMessage gameMessage = new DefaultGameMessage();
-            gameMessage.setHeader(serializeUtil.deserialize(header, THeader.class));
+            THeader tHeader = serializeUtil.deserialize(header, THeader.class);
+
+            GameMessage gameMessage = null;
+            if (dynamicRegisterGameService != null && tHeader.getType() != MessageType.AUTH.value && tHeader.getServiceId() < RequestMessageType.ASK_MASTER_CHANGE){
+                gameMessage = dynamicRegisterGameService.getMessageInstance(MessageType.fromName(tHeader.getType()),tHeader.getServiceId());
+            }else if (tHeader.getType() == MessageType.RPCREQUEST.value){
+                gameMessage = new DefaultGameMessage();
+            }else {
+                gameMessage = new DefaultResponseGameMessage();
+            }
+            gameMessage.setHeader(tHeader);
+            if (!MasterInfo.checkIsMasterOrRecorder() && !RequestMessageType.checkIsCopyOrAuth(tHeader.getServiceId()) && !MasterInfo.checkIsRecorder() && !MessageType.checkIsAuthAndResponse(tHeader.getType()) ){
+                GameMessage response = dynamicRegisterGameService.getResponseInstanceByMessageId(tHeader.getServiceId());
+                response.setMessageData(ResponseVo.fail("not open"));
+                ctx.channel().writeAndFlush(response);
+                System.out.println("cannot challllllllll");
+                return;
+            }
             gameMessage.readBody(data);
             out.add(gameMessage);
             IncommingCount.getAndIncrementDecode();

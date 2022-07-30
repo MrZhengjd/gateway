@@ -5,7 +5,7 @@ import com.game.common.model.GameMessage;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.common.util.TopicUtil;
-import com.game.domain.consume.SendMessageModel;
+import com.game.domain.consumer.SendMessageModel;
 import com.game.domain.model.DtoMessage;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
@@ -28,6 +28,9 @@ public class KafkaSendMessageModel implements SendMessageModel {
 
     @Override
     public void sendMessageToMq(GameMessage data, String baseTopic, Object key) {
+        if (data.getData() == null){
+            logger.info("here is the error log for empty data "+data.getHeader());
+        }
         byte[] value = DtoMessage.serializeData(data);// 向消息总线服务发布客户端请求消息。
 //        byte[] value = dataSerialize.serialize(data);
 //        String topic = TopicUtil.generateTopic(baseTopic,data.getHeader().getTraceId());

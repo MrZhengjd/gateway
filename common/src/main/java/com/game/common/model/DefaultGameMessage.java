@@ -12,23 +12,12 @@ import java.util.Map;
 /**
  * @author zheng
  */
-public class DefaultGameMessage extends AbstractGameMessage implements Event {
+public class DefaultGameMessage<T> extends AbstractGameMessage<T> implements Event {
     @Override
     protected Class getBodyObjClass() {
-        return Response.class;
+        return ResponseVo.class;
     }
-    public static void sendErrorServerMessage(ChannelHandlerContext ctx){
-        Map<String ,Object> data = new HashMap<>();
-        data.put("code",408);
-        data.put("status",false);
-        sendInfo(ctx,data);
 
-    }
-    public static void sendInfo(ChannelHandlerContext ctx,Object data){
-        DefaultGameMessage result = new DefaultGameMessage();
-//        result.setBody(data);
-        ctx.channel().writeAndFlush(result);
-    }
 
     public DefaultGameMessage() {
 

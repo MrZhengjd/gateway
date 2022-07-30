@@ -3,13 +3,8 @@ package com.game.domain.relation.room;
 import com.game.common.concurrent.GameEventExecutorGroup;
 import com.game.common.concurrent.IGameEventExecutorGroup;
 
-import com.game.common.redis.JsonRedisManager;
 
-import com.game.domain.flow.model.FastContextHolder;
-import com.game.domain.flow.model.Response;
 //import com.game.domain.model.PlayerRequest;
-import com.game.domain.model.vo.TMessageVo;
-import com.game.domain.relation.operate.DefaultSaveRoomDataFactory;
 import com.game.domain.relation.operate.SaveRoomData;
 import com.game.domain.relation.player.PlayerBaseInfo;
 import com.game.domain.relation.role.PlayerRole;
@@ -31,7 +26,7 @@ public class RoomManager {
 //    private volatile boolean startSaveRoom = false;
     private ScheduledFuture<?> buhuaSchedule;
     private EventExecutor executor;
-    private SaveRoomData saveRoomData = DefaultSaveRoomDataFactory.getInstance().getDefaultSaveRedis();
+    private SaveRoomData saveRoomData ;
     public Long getPlayingIndex(){
         return room.getPlayingIndex();
     }

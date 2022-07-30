@@ -40,6 +40,7 @@ public class TMessageEncoderPro extends MessageToByteEncoder<GameMessage> {
 //        byte[] bodyData = dataSerialize.serialize(msg.getData());
             out.writeInt(headData.length);
             out.writeInt(msg.getData().length);
+
             out.writeInt(Constants.END_TAIL);
             out.writeBytes(headData);
             out.writeBytes(msg.getData());

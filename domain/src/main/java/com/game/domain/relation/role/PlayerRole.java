@@ -93,7 +93,7 @@ public class PlayerRole extends BaseRole implements Cloneable, Observer {
 
 
     public void callEvent(Event event,Object object){
-        EventAnnotationManager.getInstance().sendEvent(event,object);
+//        EventAnnotationManager.getInstance().sendEvent(event,object);
     }
 
 

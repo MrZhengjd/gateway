@@ -1,7 +1,7 @@
 package test;
 
 
-import com.game.common.relation.room.Room;
+import com.game.domain.relation.room.Room;
 import org.redisson.api.RLocalCachedMap;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

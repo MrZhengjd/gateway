@@ -1,8 +1,11 @@
 package com.game.common.eventdispatch;
 
 //import com.game.common.flow.model.Node;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,18 +15,23 @@ import java.util.Map;
 /**
  * @author zheng
  */
-
+@Service
 public class EventAnnotationManager {
-    private static Map<String, List<ListenerHandler>> eventMapping = new HashMap<>();
-    private static Map<String, Map<String ,ListenerHandler>> nameEventMapping = new HashMap<>();
-    private static Map<String ,Class> eventMap = new HashMap<>();
-    private static ApplicationContext context;
+    private Map<String, List<ListenerHandler>> eventMapping = new HashMap<>();
+    private Map<String, Map<String ,ListenerHandler>> nameEventMapping = new HashMap<>();
+    private Map<String ,Class> eventMap = new HashMap<>();
+    @Autowired
+    private ApplicationContext context;
 
-    private static class Holder{
-        private static EventAnnotationManager INSTANCE = new EventAnnotationManager();
-    }
-    public static EventAnnotationManager getInstance(){
-        return Holder.INSTANCE;
+//    private static class Holder{
+//        private static EventAnnotationManager INSTANCE = new EventAnnotationManager();
+//    }
+//    public static EventAnnotationManager getInstance(){
+//        return Holder.INSTANCE;
+//    }
+    @PostConstruct
+    public void init(){
+        init(context);
     }
     /**
      * 初始化自动注册到map里面去

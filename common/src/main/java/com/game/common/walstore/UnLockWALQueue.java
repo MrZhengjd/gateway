@@ -36,6 +36,8 @@ public class UnLockWALQueue {
 //    private static AtomicLong commingCount = new AtomicLong(0);
     @Contended("writePosition")
     private volatile int writePosition;
+    @Contended("lastWritePosition")
+    private volatile boolean lastWritePosition;
     private volatile boolean rotateRead;
 //    @Contended
 //    private volatile long readIndex;
@@ -103,7 +105,31 @@ public class UnLockWALQueue {
 //    private Index readwriterPageIndex;
 
 
+    /**
+     * 获取当下读的模块
+     * @return
+     */
+    public QueueBlock getReadBlock() {
+        return readBlock;
+    }
 
+    public byte[] pullWithPosition(Integer position){
+        return readBlock.read(position);
+    }
+    /**
+     * 根据index 来获取个新的模块
+     * @param pageIndex
+     * @return
+     */
+    public QueueBlock getReadBlockWithIndex(Integer pageIndex){
+        if (readBlock.getPageIndex() == pageIndex){
+            return readBlock;
+        }
+        String filePath = formatBlockFilePath(name, pageIndex, dir);
+        readPage = new DefaultPageIndex(name,dir,pageIndex);
+        readBlock = new QueueBlock(writePage, readPage, filePath);
+        return readBlock;
+    }
     public int getCurrentWritePage() {
         return currentWritePage;
     }
@@ -141,11 +167,11 @@ public class UnLockWALQueue {
         readWriteSame=true;
         writePage = new DefaultPageIndex(name,dir,currentWritePage);
         readPage = new DefaultPageIndex(name,dir,currentReadPage);
-        readPosition = readPage.getReadPosition();
+        readPosition = 0;
         writePosition = writePage.getWriterPosition();
 //        readIndex = readwriterPageIndex.getReadIndex();
 //        writeIndex = readwriterPageIndex.getWriteIndex();
-        String filePath = formatBlockFilePath(name, 0, dir);
+        String filePath = formatBlockFilePath(name, index, dir);
         writeBlock = new QueueBlock(writePage, readPage, filePath);
         readBlock = new QueueBlock(writePage, readPage, filePath);
 //        blocks = new QueueBlock[MAX_BLOCK];
@@ -201,7 +227,9 @@ public class UnLockWALQueue {
     private void unLock(AtomicBoolean lock) {
         lock.set(false);
     }
-
+    public byte[] readWithPosition(Integer position){
+        return readBlock.read(position);
+    }
 
     private void lock(AtomicBoolean lock) {
 //        long start = System.currentTimeMillis();
@@ -443,13 +471,13 @@ public class UnLockWALQueue {
 //    public static Long getComingCount(){
 //        return commingCount.get();
 //    }
-    public void offerData(byte[] bytes){
-        PromiseUtil.safeExecuteNonResultWithoutExecutor(executor, new NonResultLocalRunner() {
+    public Promise<BlockInfo> offerData(byte[] bytes){
+        return PromiseUtil.safeExecute(executor, new LocalRunner() {
             @Override
-            public void task() {
-                offerData1(bytes);
+            public void task(Promise promise, Object object) {
+                promise.setSuccess(offerData1(bytes));
             }
-        });
+        },null);
     }
     private boolean lockCommon(boolean write){
 //        long start = System.currentTimeMillis();
@@ -470,7 +498,8 @@ public class UnLockWALQueue {
         return false;
 
     }
-    public int offerData1(byte[] bytes) {
+    public void modifyLastWriteData(byte[] bytes){}
+    public BlockInfo offerData1(byte[] bytes) {
 //        long start = System.currentTimeMillis();
 //        lock(writeLock);
 //        boolean b = lockCommon(true);
@@ -493,7 +522,7 @@ public class UnLockWALQueue {
 
 //            commingCount.getAndIncrement();
             if (currentWritePage != writePageIndex ){
-                return 0;
+                return null;
             }
             comming ++;
             int tempReadPosition = 0;
@@ -509,7 +538,7 @@ public class UnLockWALQueue {
 //            long start = System.currentTimeMillis();
             if (info.getPageIndex() != currentWritePage) {
                 if (info.isUnReach()) {
-                    return -1;
+                    return null;
                 }
 //                logger.info("rotate ------"+tempReadPosition +" write position "+ this.writePosition);
 //                rotateWrite = true;
@@ -550,13 +579,14 @@ public class UnLockWALQueue {
 
 //                rotateWrite = false;
 //                logger.info("rotate tiem "+(System.currentTimeMillis() - start) + " current read "+currentReadPage +" current write "+currentWritePage+ " read positin "+readPosition + " write position "+writePosition);
-                return 0;
+                return null;
 //
             }
             int write = writeBlock.write(bytes);
             if (write < 0){
-                return 0;
+                return null;
             }
+            int backPosition = this.writePosition;
 //            writeBlock.writeData2(bytes);
             this.writePosition = info.getAfterWriteIndex();
 //            this.writePage.setWriterPosition(info.getAfterWriteIndex());
@@ -567,10 +597,10 @@ public class UnLockWALQueue {
 //            readwriterPageIndex.setWriteIndex(this.writeIndex++);
 //            System.out.println("here is finish "+(System.currentTimeMillis() - start));
 //            coming.getAndIncrement();
-            return 1;
+            return info;
         }catch (Exception e){
             e.printStackTrace();
-            return 0;
+            return null;
         }
 //        finally {
 //            unLockCommon(b);

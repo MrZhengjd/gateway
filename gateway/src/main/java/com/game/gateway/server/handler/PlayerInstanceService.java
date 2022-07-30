@@ -5,9 +5,9 @@ import com.game.common.concurrent.LocalRunner;
 import com.game.common.concurrent.PromiseUtil;
 
 import com.game.common.model.ServerVo;
-import com.game.common.redis.JsonRedisManager;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
+import com.game.infrustructure.redis.JsonRedisManager;
 import io.netty.util.concurrent.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

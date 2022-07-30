@@ -19,6 +19,7 @@ public  class IEvent {
     protected Long eventId;
     protected int calledId;
     protected Object data;
+    private boolean usedIndex;
 
     @Override
     public String toString() {

@@ -2,66 +2,69 @@ package com.game.gateway.server.handler;
 
 
 import com.game.common.constant.Constants;
-import com.game.common.constant.RequestMessageType;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
+import com.game.common.eventdispatch.EventAnnotationManager;
 import com.game.common.model.*;
-import com.game.common.serialize.DataSerialize;
-import com.game.common.serialize.DataSerializeFactory;
 import com.game.common.util.JWTUtil;
-import com.game.domain.playerinstance.PlayerInstance;
-import com.game.domain.playerinstance.PlayerInstanceModel;
 import com.game.domain.repository.playerserver.PlayerServerRepository;
 import com.game.domain.repository.token.TokenRepository;
-import com.game.network.cache.ChannleMap;
+import com.game.gateway.consume.PlayerInstanceModel;
+import com.game.network.cache.ChannelMap;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.ScheduledFuture;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
 public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
     private static Logger logger = LoggerFactory.getLogger(ConfirmHandler.class);
 //    private static Map<String,Integer> connectMap = new HashMap<>();
-    private ChannleMap channleMap;
+    private ChannelMap channelMap;
     protected TokenRepository tokenRepository;
     private DynamicRegisterGameService dynamicRegisterGameService;
     private PlayerServerRepository playerServerRepository;
+    private EventAnnotationManager eventAnnotationManager;
 //    private JsonRedisManager jsonRedisManager;
     private PlayerInstanceModel playerInstance;
     private static final long delay = 10000;
     private volatile boolean confirmSuccess = false;// 标记连接是否认证成功
     private ScheduledFuture<?> future;// 定时器的返回值
 //    private static Logger
-    private JWTUtil.TokenBody tokenBody;
+    private TokenBody tokenBody;
 //    private DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
 
-    public JWTUtil.TokenBody getTokenBody() {
+    public TokenBody getTokenBody() {
         return tokenBody;
     }
 
-    public ConfirmHandler(ChannleMap channleMap, PlayerServerRepository  playerServerRepository,
-                          PlayerInstanceModel playerInstance,TokenRepository tokenRepository) {
-        this.channleMap = channleMap;
+    public ConfirmHandler(ChannelMap channelMap, PlayerServerRepository  playerServerRepository,
+                          PlayerInstanceModel playerInstance, TokenRepository tokenRepository) {
+        this.channelMap = channelMap;
         this.playerInstance = playerInstance;
         this.playerServerRepository = playerServerRepository;
         this.tokenRepository = tokenRepository;
 //        this.jsonRedisManager = jsonRedisManager;
     }
 
-
+    public ConfirmHandler(ChannelMap channelMap, PlayerServerRepository  playerServerRepository,
+                          PlayerInstanceModel playerInstance, TokenRepository tokenRepository, EventAnnotationManager eventAnnotationManager) {
+       this(channelMap,playerServerRepository,playerInstance,tokenRepository);
+       this.eventAnnotationManager = eventAnnotationManager;
+//        this.jsonRedisManager = jsonRedisManager;
+    }
     @Override
     public void channelActive(ChannelHandlerContext ctx)  {
 //
+
         future = ctx.channel().eventLoop().schedule(()->{
 
             if (!confirmSuccess){
@@ -76,14 +79,16 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+
         if (future != null){
             future.cancel(true);
         }
         if (tokenBody != null){
             long playerId = tokenBody.getPlayerId();
-            this.channleMap.removeChannle(playerId);
+            this.channelMap.removeChannle(playerId);
 //            channelService.removeChannel(playerId,ctx.channel());
         }
+
         ctx.fireChannelInactive();
     }
 
@@ -119,7 +124,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
                 }
                 repeatConnect();
                 this.confirmSuccess = true;
-                this.channleMap.addChannel(tokenBody.getPlayerId(),ctx.channel());
+                this.channelMap.addChannel(tokenBody.getPlayerId(),ctx.channel());
                 //保存玩家登录服务器信息 后面用来别的服务转发消息
                 playerServerRepository.savePlayerServer(Constants.PLAYER_SERVER,tokenBody.getPlayerId(),Constants.SERVER_ID);
 //                jsonRedisManager.setObjectHash1(Constants.PLAYER_SERVER,String.valueOf(tokenBody.getPlayerId()),Constants.SERVER_ID);
@@ -189,7 +194,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
     //如果所在的服务器存在，就给那个服务器发送下线的消息，同时通知用户异地登陆
     private void repeatConnect() {
         if (tokenBody != null){
-            PlayerChannel playerChannel = channleMap.getByPlayerId(tokenBody.getPlayerId());
+            PlayerChannel playerChannel = channelMap.getByPlayerId(tokenBody.getPlayerId());
             if (playerChannel  == null){
                 return;
             }

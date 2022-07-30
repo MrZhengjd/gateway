@@ -1,9 +1,9 @@
 package com.game.infrustructure.playerinstance;
 
-import com.game.common.redis.JsonRedisManager;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.domain.playerinstance.PlayerInstance;
+import com.game.infrustructure.redis.JsonRedisManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

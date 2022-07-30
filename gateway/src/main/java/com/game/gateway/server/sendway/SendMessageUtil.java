@@ -3,7 +3,7 @@ package com.game.gateway.server.sendway;
 
 import com.game.common.model.GameMessage;
 import com.game.common.model.PlayerChannel;
-import com.game.network.cache.ChannleMap;
+import com.game.network.cache.ChannelMap;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 //@Log4j2
 public class SendMessageUtil {
     private static Logger logger = LoggerFactory.getLogger(SendMessageUtil.class);
-    public static void sendMessage(GameMessage message, ChannleMap channleMap, Long playerId){
-        PlayerChannel byPlayerId = channleMap.getByPlayerId(playerId);
+    public static void sendMessage(GameMessage message, ChannelMap channelMap, Long playerId){
+        PlayerChannel byPlayerId = channelMap.getByPlayerId(playerId);
         if (byPlayerId == null){
             logger.error("receive data error"+playerId);
             return;

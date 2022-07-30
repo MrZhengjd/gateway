@@ -11,7 +11,7 @@ public class IThreadPool {
         return Holder.instance;
     }
     private IThreadPool(){
-        executor = new ThreadPoolExecutor(8,8,2000l, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<>());
+        executor = new ThreadPoolExecutor(4,4,2000l, TimeUnit.MILLISECONDS,new LinkedBlockingQueue<>());
     }
     private static class Holder{
         private static IThreadPool instance = new IThreadPool();

@@ -28,4 +28,8 @@ public enum MessageType {
         }
         return null;
     }
+
+    public static boolean checkIsAuthAndResponse(byte type){
+        return type == AUTH.value || type == RPCRESPONSE.value;
+    }
 }

@@ -2,23 +2,17 @@ package com.game.gateway.server.handler;
 
 import com.game.common.concurrent.LocalRunner;
 import com.game.common.concurrent.PromiseUtil;
-import com.game.common.constant.RequestMessageType;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.model.GameMessage;
+import com.game.common.model.TokenBody;
 import com.game.common.util.MessageKeyUtil;
 import com.game.common.util.TopicUtil;
-import com.game.domain.consume.SendMessageModel;
-import com.game.domain.playerinstance.PlayerInstance;
-import com.game.domain.playerinstance.PlayerInstanceModel;
+import com.game.domain.consumer.SendMessageModel;
 import com.game.gateway.config.GateWayConfig;
-import com.game.network.cache.ChannleMap;
+import com.game.gateway.consume.PlayerInstanceModel;
+import com.game.network.cache.ChannelMap;
 
 
-
-
-import com.game.common.serialize.DataSerialize;
-import com.game.common.serialize.DataSerializeFactory;
-import com.game.common.util.JWTUtil;
 import com.game.common.util.NettyUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -48,31 +42,31 @@ public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessag
 //    private KafkaTemplate<String, byte[]> kafkaTemplate;
     //jdk1.5 并发包中的用于计数的类
     public static AtomicInteger nConnection = new AtomicInteger();
-    private ChannleMap channleMap;
+    private ChannelMap channelMap;
     public static AtomicLong handleCount = new AtomicLong(0);
 //    private static GameStatusHandleMap gameStatusHandleMap
-    public TGameDispatchHandler( ChannleMap channleMap) {
+    public TGameDispatchHandler(ChannelMap channelMap) {
 
-        this.channleMap = channleMap;
+        this.channelMap = channelMap;
     }
 
 
 
-    public TGameDispatchHandler( ChannleMap channleMap, DynamicRegisterGameService dynamicRegisterGameService) {
+    public TGameDispatchHandler(ChannelMap channelMap, DynamicRegisterGameService dynamicRegisterGameService) {
 
-        this.channleMap = channleMap;
+        this.channelMap = channelMap;
 
         this.dynamicRegisterGameService = dynamicRegisterGameService;
     }
-    public TGameDispatchHandler( ChannleMap channleMap, DynamicRegisterGameService dynamicRegisterGameService,PlayerInstanceModel playerInstanceModel,SendMessageModel sendMessageModel,GateWayConfig gateWayConfig) {
-        this.channleMap = channleMap;
+    public TGameDispatchHandler(ChannelMap channelMap, DynamicRegisterGameService dynamicRegisterGameService, PlayerInstanceModel playerInstanceModel, SendMessageModel sendMessageModel, GateWayConfig gateWayConfig) {
+        this.channelMap = channelMap;
 
         this.dynamicRegisterGameService = dynamicRegisterGameService;
         this.playerInstanceModel = playerInstanceModel;
         this.sendMessageModel = sendMessageModel;
         this.gateWayConfig = gateWayConfig;
     }
-    private JWTUtil.TokenBody tokenBody;
+    private TokenBody tokenBody;
 
     private void handleAndSendMessage( GameMessage gameMessage,ChannelHandlerContext ctx,Map<String ,Object> map){
         handleAndSendMessage(gameMessage,ctx,map);

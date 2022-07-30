@@ -12,6 +12,7 @@ public interface GameMessage<T> {
     void readHeader(byte[] header);
     void copyHeadData(THeader tHeader);
     T deserialzeToData();
+    T deserialzeToData(Class<T> t);
     THeader getHeader();
 
 }

@@ -82,21 +82,20 @@ public class NettyServer {
         try {
             if (StringUtils.isNotBlank(host)){
                 f = b.bind(new InetSocketAddress(host,port)).sync();
-//                f = b.bind(host,port).sync();
-                f.addListener(new GenericFutureListener<Future<? super Void>>() {
-                    @Override
-                    public void operationComplete(Future<? super Void> future) throws Exception {
-                        if (future.isSuccess()){
-                            System.out.println("here is bin sucees");
-                            successHandle.afterSueccess();
-                        }
-                    }
-                });
-
             }else {
                 f = b.bind(port).sync();
             }
-
+//
+            f.addListener(new GenericFutureListener<Future<? super Void>>() {
+                @Override
+                public void operationComplete(Future<? super Void> future) throws Exception {
+                    if (future.isSuccess()){
+                        System.out.println("here is bin sucees");
+                        successHandle.afterSueccess();
+                    }
+                }
+            });
+            f.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();
         }

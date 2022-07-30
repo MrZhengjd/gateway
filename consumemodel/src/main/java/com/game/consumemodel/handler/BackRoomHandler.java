@@ -8,7 +8,7 @@ import com.game.consumemodel.model.BackRoomMessage;
 import com.game.consumemodel.model.FastPlayerRoomHolder;
 import com.game.domain.checkhu.DefaultCheckHu;
 import com.game.domain.checkhu.DefaultCheckHuPools;
-import com.game.domain.consume.SendMessageModel;
+import com.game.domain.consumer.SendMessageModel;
 import com.game.domain.messagedispatch.GameDispatchService;
 import com.game.domain.messagedispatch.GameMessageListener;
 import com.game.domain.model.msg.BaseChuPaiInfo;
