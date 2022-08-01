@@ -7,8 +7,4 @@ import com.game.common.constant.RequestMessageType;
  */
 @HeaderAnno(serviceId = RequestMessageType.AUTH_REQUEST,messageType = MessageType.RPCREQUEST)
 public class AuthMessageRequest extends DefaultGameMessage{
-    @Override
-    protected Class getBodyObjClass() {
-        return String.class;
-    }
 }

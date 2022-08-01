@@ -23,14 +23,14 @@ import com.game.common.serialize.DataSerializeFactory;
 import com.game.common.store.DefaultIndex;
 import com.game.common.store.Index;
 import com.game.common.util.TopicUtil;
-import com.game.diststore.client.ConnectTools;
+import com.game.network.client.ConnectTools;
 import com.game.diststore.model.SelectInfo;
 import com.game.diststore.store.UnLockQueueOneInstance;
 import com.game.diststore.util.BackupUtil;
 import com.game.diststore.util.HandleUtil;
-import com.game.domain.messagedispatch.GameDispatchService;
-import com.game.domain.messagedispatch.GameMessageDispatch;
-import com.game.domain.messagedispatch.GameMessageListener;
+import com.game.common.messagedispatch.GameDispatchService;
+import com.game.common.messagedispatch.GameMessageDispatch;
+import com.game.common.messagedispatch.GameMessageListener;
 import com.game.network.cache.ChannelMap;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -114,7 +114,13 @@ public class RecordComponent {
     }
 
     public void rollBack(){
-        masterChangeMediator.rollback();
+        synchronized (InfoConstant.LOCAL_HOST.intern()){
+            if (masterChangeMediator != null){
+                masterChangeMediator.rollback();
+            }
+        }
+
+
     }
     /**
      * 当有换新的master 就记录一个信息
@@ -216,7 +222,7 @@ public class RecordComponent {
     }
 
     public void countDown(String key) {
-//        String key = TopicUtil.generateTopic(InfoConstant.SELECT, getSelectCount());
+//
         lockUtil.writeLockOperation(new Operation() {
             @Override
             public void operate() {
@@ -225,11 +231,12 @@ public class RecordComponent {
                     return;
                 }
                 countDownLatch.countDown();
-                if (countDownLatch.getCount() == 0) {
-//                    List<CopyInfo> waitSelects = getWaitSelectDatas(backupUtil.getByKey(key));
+//
+                if (countDownLatch.getCount() == 0){
                     selectMaster(backupUtil.getByKey(key), key);
-                    logger.info("here is the finish ask copy info");
                 }
+
+                logger.info("here is the finish ask copy info");
             }
         });
 
@@ -303,15 +310,35 @@ public class RecordComponent {
                 }
                 lastSelectTile = System.currentTimeMillis();
                 System.out.println("select master start------------");
-                try {
-                    backupUtil.getCountDownLatch(key).await(5, TimeUnit.SECONDS);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return;
-                }
-                System.out.println("waittime " + (System.currentTimeMillis() - lastSelectTile));
-//                List<CopyInfo> waitSelects = getWaitSelectDatas(backupUtil.getByKey(key));
-                selectMaster(backupUtil.getByKey(key), key);
+                PromiseUtil.keyTimerTask(RecordComponent.class.getSimpleName(), new Runnable() {
+                    @Override
+                    public void run() {
+                        lockUtil.writeLockOperation(new Operation() {
+                            @Override
+                            public void operate() {
+                                CountDownLatch countDownLatch = backupUtil.getCountDownLatch(key);
+                                if (countDownLatch == null) {
+                                    return;
+                                }
+                                if (countDownLatch.getCount() > 0){
+                                    backupUtil.removeKey(key);
+                                    return;
+                                }
+                                selectMaster(backupUtil.getByKey(key), key);
+                            }
+                        });
+
+                    }
+                },5l,TimeUnit.SECONDS);
+//                try {
+//                    backupUtil.getCountDownLatch(key).await(5, TimeUnit.SECONDS);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                    return;
+//                }
+//                System.out.println("waittime " + (System.currentTimeMillis() - lastSelectTile));
+////                List<CopyInfo> waitSelects = getWaitSelectDatas(backupUtil.getByKey(key));
+
 //                backupUtil.removeKey(key);
             }
         }
@@ -362,6 +389,7 @@ public class RecordComponent {
                 master.setLatestOperateId(lastOperateId);
 //                masterChangeQueue.offerData(dataSerialize.serialize(masterInfo));
                 changingMaster = false;
+                backupUtil.removeKey(key);
                 System.out.println("auto select master to " + master + "/n finish time " + System.currentTimeMillis());
 
             }
@@ -467,6 +495,7 @@ public class RecordComponent {
      * 初始化定时器
      */
     public void init() {
+
         IGameEventExecutorGroup.getInstance().selectByHash(RecordComponent.class.getSimpleName()).scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {

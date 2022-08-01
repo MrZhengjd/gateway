@@ -2,17 +2,16 @@ package com.game.consumemodel.handler;
 
 import com.game.common.constant.InfoConstant;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
-import com.game.common.model.GameMessage;
-import com.game.common.model.OfflineMessageRequest;
-import com.game.common.model.OnlineMessageRequest;
-import com.game.common.model.THeader;
+import com.game.common.model.*;
 import com.game.common.util.TopicUtil;
 import com.game.consumemodel.config.CommonConsumeConfig;
 import com.game.consumemodel.find.FindPlayerIdProxy;
 //import com.game.domain.consume.SendMessageModel;
 import com.game.domain.consumer.SendMessageModel;
-import com.game.domain.messagedispatch.GameDispatchService;
-import com.game.domain.messagedispatch.GameMessageListener;
+import com.game.common.messagedispatch.GameDispatchService;
+import com.game.common.messagedispatch.GameMessageListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,7 @@ import java.util.List;
 @GameDispatchService
 @Service
 public class OnOfflineHandler {
+    private static Logger logger = LoggerFactory.getLogger(OnOfflineHandle.class);
     @Autowired
     private SendMessageModel sendMessageModel;
     @Autowired
@@ -41,6 +41,7 @@ public class OnOfflineHandler {
     public void handleOnline(OnlineMessageRequest onlineMessageRequest){
 
         handleOnOffline(commonConsumeConfig.getOnlineSendWay(), onlineMessageRequest.getHeader());
+        logger.info("here is handle online message ");
     }
 
     @GameMessageListener(value = OfflineMessageRequest.class,name = "323")

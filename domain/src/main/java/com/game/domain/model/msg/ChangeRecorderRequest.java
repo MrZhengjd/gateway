@@ -15,10 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChangeRecorderRequest extends DefaultGameMessage {
-    @Override
-    protected Class getBodyObjClass() {
-        return ChangeVo.class;
-    }
 
 //    private ChangeVo changeVo;
 }

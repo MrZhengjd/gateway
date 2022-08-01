@@ -6,7 +6,7 @@ import com.game.common.constant.RequestMessageType;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.model.BandSupplyRequest;
 import com.game.common.model.vo.BandServerVo;
-import com.game.diststore.client.ConnectTools;
+import com.game.network.client.ConnectTools;
 import com.game.diststore.role.Master;
 import com.game.diststore.role.Slave;
 import com.game.diststore.service.SlaveCopy;

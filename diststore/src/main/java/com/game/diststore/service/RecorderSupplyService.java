@@ -12,8 +12,8 @@ import com.game.common.serialize.DataSerializeFactory;
 import com.game.diststore.store.UnLockQueueOneInstance;
 import com.game.diststore.util.BackupUtil;
 import com.game.diststore.util.HandleUtil;
-import com.game.domain.messagedispatch.GameDispatchService;
-import com.game.domain.messagedispatch.GameMessageListener;
+import com.game.common.messagedispatch.GameDispatchService;
+import com.game.common.messagedispatch.GameMessageListener;
 import com.game.domain.model.msg.AskMasterRequest;
 import com.game.domain.model.msg.ChangeRecorderRequest;
 import com.game.domain.model.vo.ChangeVo;
@@ -46,7 +46,8 @@ public class RecorderSupplyService {
 //    private ReadWriteLockOperate readWriteLockOperate = new ReadWriteLockOperate();
     @GameMessageListener(value = ChangeRecorderRequest.class)
     public void handle(ChangeRecorderRequest changeRecorderRequest){
-        ChangeVo changeVo = (ChangeVo) changeRecorderRequest.deserialzeToData();
+        ChangeVo changeVo = (ChangeVo) changeRecorderRequest.deserialzeToData(ChangeVo.class);
+        logger.info("here is the changevo comming");
         if (changeVo == null){
             return;
         }
@@ -86,7 +87,7 @@ public class RecorderSupplyService {
 
     @GameMessageListener(value = BandSupplyRequest.class)
     public void bandSupportService(BandSupplyRequest bandSupplyRequest){
-        BandServerVo serverVo = (BandServerVo) bandSupplyRequest.deserialzeToData();
+        BandServerVo serverVo = (BandServerVo) bandSupplyRequest.deserialzeToData(BandServerVo.class);
         recordComponent.addAddressToNodeMap(new InetSocketAddress(serverVo.getHost(),serverVo.getPort()));
         HandleUtil.handleAndSendToRequestPlayer(bandSupplyRequest,"success",dynamicRegisterGameService,channelMap,true);
     }

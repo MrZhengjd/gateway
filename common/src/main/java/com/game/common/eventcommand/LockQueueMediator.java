@@ -80,5 +80,5 @@ public abstract class LockQueueMediator {
      * @param key
      * @return
      */
-    public abstract Promise<IEvent> getNextEvent(Long key);
+    public abstract Promise<IEvent> getNextEvent(long key,long endKey);
 }

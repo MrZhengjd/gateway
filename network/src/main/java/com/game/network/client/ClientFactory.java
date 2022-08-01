@@ -1,4 +1,4 @@
-package com.game.diststore.client;
+package com.game.network.client;
 
 import com.game.common.concurrent.IGameEventExecutorGroup;
 import com.game.common.eventdispatch.DynamicRegisterGameService;

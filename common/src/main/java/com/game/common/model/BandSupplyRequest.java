@@ -14,8 +14,4 @@ import lombok.Setter;
 public class BandSupplyRequest extends DefaultGameMessage {
 //    private BandServerVo bandServerVo;
 
-    @Override
-    protected Class getBodyObjClass() {
-        return BandServerVo.class;
-    }
 }

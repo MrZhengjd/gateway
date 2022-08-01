@@ -1,6 +1,7 @@
 package com.game.common.messagedispatch;
 
-import com.game.common.model.anno.GameMessage;
+
+import com.game.common.model.GameMessage;
 
 /**
  * @author zheng

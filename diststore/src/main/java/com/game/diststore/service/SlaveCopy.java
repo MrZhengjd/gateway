@@ -13,7 +13,8 @@ import com.game.common.eventcommand.IEvent;
 import com.game.common.eventcommand.LockQueueMediator;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.model.*;
-import com.game.diststore.client.ConnectTools;
+import com.game.network.client.ConnectTools;
+import com.game.diststore.model.CopyMessage;
 import com.game.diststore.store.UnLockQueueOneInstance;
 import com.game.diststore.util.BackupUtil;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -26,6 +27,7 @@ import sun.misc.Contended;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author zheng
@@ -35,8 +37,8 @@ public class SlaveCopy {
     private static Logger logger = LoggerFactory.getLogger(SlaveCopy.class);
     @Contended
     private volatile boolean start;
-    @Contended
-    private volatile Long lastCopyId = 1l;
+
+    private AtomicLong lastCopyId = new AtomicLong(1);
     private EventExecutor eventExecutor = new DefaultEventExecutor();
     private EventExecutor eventExecutor1 = new DefaultEventExecutor();
     @Autowired
@@ -62,8 +64,11 @@ public class SlaveCopy {
 
     public void rollback(){
         mediator.rollback();
-        this.lastCopyId = mediator.getLatestOperateId();
-        System.out.println("finish roll back");
+        if (mediator.getLatestOperateId() > this.lastCopyId.get()){
+            this.lastCopyId.set(mediator.getLatestOperateId());
+        }
+
+        System.out.println("finish roll back"+this.lastCopyId.get());
     }
     public void startCopyData(){
         synchronized (InfoConstant.SLAVE_COPY.intern()){
@@ -103,26 +108,15 @@ public class SlaveCopy {
 
     }
 
-    /**
-     * 复制消息
-     */
-    private void backupCopy() {
 
-        if (MasterInfo.checkIsMasterOrRecorder()){
-            return;
-        }
-        rotateCopy();
-
-
-    }
     public void countDown(IEvent iEvent){
-        String key = InfoConstant.BACKUP_COPY+lastCopyId;
+        String key = InfoConstant.BACKUP_COPY+lastCopyId.get();
         CountDownLatch countDownLatch = backupUtil.getCountDownLatch(key);
         if (countDownLatch != null){
-
-            this.lastCopyId = iEvent.getEventId();
-
             countDownLatch.countDown();
+            if (iEvent.getEventId() > this.lastCopyId.get()){
+                this.lastCopyId.set(iEvent.getEventId());
+            }
 
         }
     }
@@ -133,7 +127,7 @@ public class SlaveCopy {
     private void askMasterChangeInfo(){
         if (MasterInfo.getBandInfo() != null){
             GameMessage askMaterChange = dynamicRegisterGameService.getDefaultRequest(RequestMessageType.ASK_MASTER_CHANGE);
-            askMaterChange.setMessageData(lastCopyId);
+            askMaterChange.setMessageData(lastCopyId.get());
             connectTools.writeMessage(InfoConstant.LOCAL_HOST,InfoConstant.RECORDER_PORT,askMaterChange);
         }
 
@@ -143,7 +137,7 @@ public class SlaveCopy {
      * 和masterchange 对比过后再去复制更新
      */
     private void compareAndCopy(){
-        MasterCopyInfo copyInfo = MasterInfo.needCopy(lastCopyId);
+        MasterCopyInfo copyInfo = MasterInfo.needCopy(lastCopyId.get());
         if (copyInfo == null) {
             return;
         }
@@ -174,15 +168,17 @@ public class SlaveCopy {
 //            }
             Integer port = Integer.valueOf(nodeInfo.substring(nodeInfo.indexOf("-")+1));
 //        NodeInfo masterInfo = MasterInfo.getMasterInfo();
-            if (nodeInfo!= null && (lastCopyId == null ||lastCopyId < copyInfo.getEndCopyId())){
+            if (nodeInfo!= null && (lastCopyId == null ||lastCopyId.get() < copyInfo.getEndCopyId())){
                 if (backupUtil.getByKey(InfoConstant.BACK_UP_COPY+lastCopyId)!= null){
                     return;
                 }
+                logger.info("last copy id "+lastCopyId.get());
                 CountDownLatch latch = new CountDownLatch(1);
-                backupUtil.saveLatchInfo(InfoConstant.BACKUP_COPY+lastCopyId,latch);
+                backupUtil.saveLatchInfo(InfoConstant.BACKUP_COPY+lastCopyId.get(),latch);
                 CopyMessageRequest copyMessage = (CopyMessageRequest) dynamicRegisterGameService.getRequestInstanceByMessageId(RequestMessageType.COPY_DATA);
-                logger.info("copy id "+lastCopyId);
-                copyMessage.setMessageData(lastCopyId);
+                logger.info("copy id "+lastCopyId.get());
+                CopyMessage info = new CopyMessage(lastCopyId.get(),copyInfo.getEndCopyId());
+                copyMessage.setMessageData(info);
 //                copyMessage.setLastCopyId(lastCopyId);
                 copyMessage.getHeader().setAttribute(InfoConstant.BACK_UP_COPY);
                 connectTools.writeMessage(host,port,copyMessage);
@@ -193,9 +189,10 @@ public class SlaveCopy {
                     e.printStackTrace();
                     return;
                 }
-//                lastCopyId = mediator.getLatestOperateId();
+//                lastCopyId.set(mediator.getLatestOperateId());
 //                System.out.println("finish copy data once -----------");
-                if (lastCopyId <copyInfo.getEndCopyId()){
+
+                if (lastCopyId.get() <copyInfo.getEndCopyId()){
                     System.out.println("rotate -------");
                     rotateMaterCopy(copyInfo);
                 }
@@ -211,22 +208,22 @@ public class SlaveCopy {
      */
     private void rotateCopy(){
         NodeInfo masterInfo = MasterInfo.getMasterInfo();
-        if (masterInfo!= null && (lastCopyId == null ||lastCopyId < masterInfo.getLatestOperateId())){
+        if (masterInfo!= null && (lastCopyId == null ||lastCopyId.get() < masterInfo.getLatestOperateId())){
             CopyMessageRequest copyMessage = (CopyMessageRequest) dynamicRegisterGameService.getRequestInstanceByMessageId(RequestMessageType.COPY_DATA);
-            copyMessage.setMessageData(lastCopyId);
+            copyMessage.setMessageData(lastCopyId.get());
             copyMessage.getHeader().setAttribute(InfoConstant.BACK_UP_COPY);
             connectTools.writeMessage(masterInfo.getHost(),masterInfo.getPort(),copyMessage);
             CountDownLatch latch = new CountDownLatch(1);
-            backupUtil.saveLatchInfo(InfoConstant.BACKUP_COPY+lastCopyId,latch);
+            backupUtil.saveLatchInfo(InfoConstant.BACKUP_COPY+lastCopyId.get(),latch);
             try {
                 latch.await(10,TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 return;
             }
-            lastCopyId = mediator.getLatestOperateId();
+            lastCopyId.set(mediator.getLatestOperateId());
             System.out.println("finish copy data once -----------");
-            if (lastCopyId < masterInfo.getLatestOperateId()){
+            if (lastCopyId.get() < masterInfo.getLatestOperateId()){
                 rotateCopy();
             }
         }

@@ -9,7 +9,7 @@ import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.model.*;
 import com.game.common.model.vo.BandServerVo;
 import com.game.common.util.JWTUtil;
-import com.game.diststore.client.ConnectTools;
+import com.game.network.client.ConnectTools;
 import com.game.diststore.role.Master;
 import com.game.diststore.service.MasterWrite;
 import com.game.diststore.service.RecordComponent;
@@ -48,7 +48,7 @@ public class MasterApplication {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(5000);
+                            Thread.sleep(10000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

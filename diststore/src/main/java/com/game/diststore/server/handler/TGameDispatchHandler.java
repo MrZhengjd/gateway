@@ -6,7 +6,7 @@ import com.game.common.constant.RequestMessageType;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.model.GameMessage;
 import com.game.common.util.MessageKeyUtil;
-import com.game.domain.messagedispatch.GameMessageDispatchService;
+import com.game.common.messagedispatch.GameMessageDispatchService;
 import com.game.network.cache.ChannelMap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;

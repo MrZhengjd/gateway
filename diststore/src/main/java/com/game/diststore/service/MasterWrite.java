@@ -6,7 +6,7 @@ import com.game.common.eventcommand.LockQueueMediator;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.generator.IdGenerator;
 import com.game.common.generator.IdGeneratorFactory;
-import com.game.diststore.client.ConnectTools;
+import com.game.network.client.ConnectTools;
 import com.game.domain.model.msg.ChangeRecorderRequest;
 import com.game.domain.model.vo.ChangeVo;
 import org.springframework.beans.factory.annotation.Autowired;

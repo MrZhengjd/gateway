@@ -7,9 +7,10 @@ import com.game.common.model.GameMessage;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.common.util.TopicUtil;
-import com.game.domain.consume.SendMessageModel;
-import com.game.domain.messagedispatch.GameDispatchService;
-import com.game.domain.messagedispatch.GameMessageListener;
+//import com.game.domain.consume.SendMessageModel;
+import com.game.domain.consumer.SendMessageModel;
+import com.game.common.messagedispatch.GameDispatchService;
+import com.game.common.messagedispatch.GameMessageListener;
 import com.game.domain.model.msg.BaseChuPaiInfo;
 import com.game.waitstart.model.ChuPaiMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class DismondService {
     private DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
     @GameMessageListener(value = ChuPaiMessage.class,name = "323")
     public void handle(ChuPaiMessage chuPaiMessage){
-        BaseChuPaiInfo deserialize = (BaseChuPaiInfo) chuPaiMessage.deserialzeToData();
+        BaseChuPaiInfo deserialize = (BaseChuPaiInfo) chuPaiMessage.deserialzeToData(BaseChuPaiInfo.class);
 //        BaseChuPaiInfo deserialize = chuPaiMessage.getData();
         GameMessage response = dynamicRegisterGameService.getResponseByMessageIdSimple(chuPaiMessage.getHeader());
         response.setMessageData("hello");

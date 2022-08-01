@@ -14,13 +14,14 @@ import com.game.common.model.*;
 import com.game.common.model.vo.MasterChangeVo;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
-import com.game.diststore.client.ConnectTools;
-import com.game.diststore.client.SendMessageSerialize;
+import com.game.network.client.ConnectTools;
+import com.game.network.client.SendMessageSerialize;
+import com.game.diststore.model.CopyMessage;
 import com.game.diststore.store.UnLockQueueOneInstance;
 import com.game.diststore.util.HandleUtil;
-import com.game.domain.messagedispatch.GameDispatchService;
-import com.game.domain.messagedispatch.GameMessageDispatch;
-import com.game.domain.messagedispatch.GameMessageListener;
+import com.game.common.messagedispatch.GameDispatchService;
+import com.game.common.messagedispatch.GameMessageDispatch;
+import com.game.common.messagedispatch.GameMessageListener;
 import com.game.network.cache.ChannelMap;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -28,6 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.misc.Contended;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 做为从机 也向recorder 提供服务
@@ -49,13 +54,14 @@ public class WorkerSupplyService {
     private SlaveCopy slaveCopy;
     protected LockQueueMediator mediator = UnLockQueueOneInstance.getInstance().getMediator();
     private DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
-
+    @Contended
+    private volatile long copyMessageId = -8;
 //    @Autowired
 //    private SendMessageSerialize sendMessageSerialize;
     @GameMessageListener(value = AuthMessageResponse.class)
     public void handleAuthRequest(AuthMessageResponse response){
 
-        ResponseVo result = (ResponseVo) response.deserialzeToData();
+        ResponseVo result = (ResponseVo) response.deserialzeToData(ResponseVo.class);
         System.out.println("here is handle for auth "+result);
         if ( result!= null && result.getCode() == ResultStatus.SUCCESS.getValue()){
 //            startMap.get(key).getLatch().countDown();
@@ -71,7 +77,7 @@ public class WorkerSupplyService {
     @GameMessageListener(value = AskCopyInfoRequest.class)
     public void askMasterlatestOperateInfo(AskCopyInfoRequest copyMessageRequest){
         try {
-            String key = (String) copyMessageRequest.deserialzeToData();
+            String key = (String) copyMessageRequest.deserialzeToData(String.class);
 //        GameMessage response = dynamicRegisterGameService.getResponseInstanceByMessageId(copyMessageRequest.getHeader().getServiceId());
             Long latestOperateId = mediator.getLatestOperateId();
 
@@ -83,22 +89,22 @@ public class WorkerSupplyService {
         }
 
     }
-    @GameMessageListener(value = AskMasterChangeResponse.class)
-    public void handleMasterChange(AskMasterChangeResponse askMasterChangeResponse){
-        ResponseVo re = (ResponseVo) askMasterChangeResponse.deserialzeToData();
-        if (re.getCode() != ResultStatus.SUCCESS.getValue()){
-            return;
-        }
-        MasterChangeVo vo = (MasterChangeVo) re.getData();
-        if (vo == null){
-            return;
-        }
-        MasterInfo.clearMasterChange();
-        MasterInfo.saveMasterChangeVo(InfoConstant.MASTER,vo);
-    }
+//    @GameMessageListener(value = AskMasterChangeResponse.class)
+//    public void handleMasterChange(AskMasterChangeResponse askMasterChangeResponse){
+//        ResponseVo re = (ResponseVo) askMasterChangeResponse.deserialzeToData();
+//        if (re.getCode() != ResultStatus.SUCCESS.getValue()){
+//            return;
+//        }
+//        MasterChangeVo vo = (MasterChangeVo) re.getData();
+//        if (vo == null){
+//            return;
+//        }
+//        MasterInfo.clearMasterChange();
+//        MasterInfo.saveMasterChangeVo(InfoConstant.MASTER,vo);
+//    }
     @GameMessageDispatch(value = @HeaderAnno(serviceId = RequestMessageType.ASK_MASTER_CHANGE,messageType = MessageType.RPCRESPONSE))
     public void handleMasterChange1(DefaultGameMessage askMasterChangeResponse){
-        ResponseVo re = (ResponseVo) askMasterChangeResponse.deserialzeToData();
+        ResponseVo re = (ResponseVo) askMasterChangeResponse.deserialzeToData(ResponseVo.class);
         if (re.getCode() != ResultStatus.SUCCESS.getValue()){
             return;
         }
@@ -111,10 +117,11 @@ public class WorkerSupplyService {
     }
     @GameMessageListener(value = CopyMessageRequest.class)
     public void copyData(CopyMessageRequest copyMessageRequest){
-        Long copyId = (Long) copyMessageRequest.deserialzeToData();
-        logger.info("copy message here "+copyId);
+//        Long copyId = (Long) copyMessageRequest.deserialzeToData();
+        CopyMessage copyMessage = (CopyMessage) copyMessageRequest.deserialzeToData(CopyMessage.class);
+        logger.info("copy message here "+copyMessage.getLastCopyId());
 //        GameMessage response = dynamicRegisterGameService.getResponseByMessageIdSimple(copyMessageRequest.getHeader());
-        mediator.getNextEvent(copyId).addListener(new GenericFutureListener<Future<? super IEvent>>() {
+        mediator.getNextEvent(copyMessage.getLastCopyId(),copyMessage.getEndCopyId()).addListener(new GenericFutureListener<Future<? super IEvent>>() {
             @Override
             public void operationComplete(Future<? super IEvent> future) throws Exception {
                 if (future.isSuccess() && future.get() != null){
@@ -129,32 +136,38 @@ public class WorkerSupplyService {
 
     }
 
-    /**
-     * 获得复制消息的最近消息
-     * @param lastCopyId
-     */
-    private void takeNearestCopyInfo(Long lastCopyId){
-
-    }
 
     @GameMessageListener(value = CopyMessageResponse.class)
     public void copyMasterToLocal(CopyMessageResponse copyMessageRequest){
 
 //        GameMessage response = dynamicRegisterGameService.getResponseByMessageIdSimple(copyMessageRequest.getHeader());
-        PromiseUtil.safeExecuteNonResult(slaveCopy.getEventExecutor1(), new NonResultLocalRunner() {
-            @Override
-            public void task() {
-                ResponseVo result = (ResponseVo) copyMessageRequest.deserialzeToData();
-                if (result.getData() == null){
+        try {
+            logger.info("here is  copy id");
+            ResponseVo result = (ResponseVo) copyMessageRequest.deserialzeToData(ResponseVo.class);
+            if (result.getData() == null){
+                logger.info("receive data is empty");
+                return;
+            }
+
+            IEvent event = (IEvent) result.getData();
+            if (event != null){
+                logger.info("here is handle copy id"+event.getEventId());
+                if(event.getEventId() <= copyMessageId){
                     return;
                 }
-                IEvent event = (IEvent) result.getData();
-                mediator.execute(event);
-                slaveCopy.countDown(event);
-
-                System.out.println("here is handle copy message -----"+event.getEventId());
+                copyMessageId = event.getEventId();
+            }else {
+                logger.info("copy data is empty-------");
+                return;
             }
-        });
+
+            mediator.execute(event);
+            slaveCopy.countDown(event);
+
+            System.out.println("here is handle copy message -----"+event.getEventId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
     /**

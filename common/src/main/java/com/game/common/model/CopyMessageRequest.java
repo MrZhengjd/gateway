@@ -12,8 +12,8 @@ import lombok.Setter;
 @Setter
 public class CopyMessageRequest extends DefaultGameMessage {
 
-    @Override
-    protected Class getBodyObjClass() {
-        return Long.class;
-    }
+//    @Override
+//    protected Class getBodyObjClass() {
+//        return CopyM.class;
+//    }
 }

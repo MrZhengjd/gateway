@@ -36,6 +36,7 @@ public class TestBatchConsumer {
     }
     public static void testBatch() throws InterruptedException {
         ClientFactory clientFactory = ClientFactory.getInstance();
+//        clientFactory.buildNewClient()
         String host = "127.0.0.1";
         int port = 12365;
         String base = "base";

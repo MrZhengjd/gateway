@@ -1,6 +1,8 @@
 package com.game.gamelogic.handler;
 
 import com.game.common.eventdispatch.DynamicRegisterGameService;
+import com.game.common.messagedispatch.GameDispatchService;
+import com.game.common.messagedispatch.GameMessageListener;
 import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.consumemodel.config.CommonConsumeConfig;
@@ -8,9 +10,7 @@ import com.game.consumemodel.model.BackRoomMessage;
 import com.game.consumemodel.model.FastPlayerRoomHolder;
 import com.game.domain.checkhu.DefaultCheckHu;
 import com.game.domain.checkhu.DefaultCheckHuPools;
-import com.game.domain.consume.SendMessageModel;
-import com.game.domain.messagedispatch.GameDispatchService;
-import com.game.domain.messagedispatch.GameMessageListener;
+import com.game.domain.consumer.SendMessageModel;
 import com.game.domain.model.msg.BaseChuPaiInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class BackRoomHandler2 {
         }
 //        MjCheckHu mjCheckHu = new MjCheckHu();
 //        mjCheckHu.checkHu();
-        BaseChuPaiInfo info =(BaseChuPaiInfo) backRoomMessage.deserialzeToData();
+        BaseChuPaiInfo info =(BaseChuPaiInfo) backRoomMessage.deserialzeToData(BaseChuPaiInfo.class);
         DefaultCheckHu checkHuModel = defaultCheckHuPools.getCheckHuModel(commonConsumeConfig.getGameType());
 //        checkHuModel.checkHu();
     }

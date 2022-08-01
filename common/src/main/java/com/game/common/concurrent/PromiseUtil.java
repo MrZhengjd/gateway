@@ -11,10 +11,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class PromiseUtil {
 
+    public static void timerTask(EventExecutor executor,Runnable runnable,Long time,TimeUnit timeUnit){
+        executor.schedule(runnable,time,timeUnit);
+    }
+
+    public static void keyTimerTask(Object key,Runnable runnable,Long time,TimeUnit timeUnit){
+        timerTask(IGameEventExecutorGroup.getInstance().selectByHash(key),runnable,time,timeUnit);
+    }
     public static void safeExecuteNoResultByKey(Object key,NonResultLocalRunner localRunner){
         safeExecuteNonResult(IGameEventExecutorGroup.getInstance().selectByHash(key),localRunner);
     }
-    public static void safeExecuteNonResult(EventExecutor executor, NonResultLocalRunner localRunner) {
+    public static void safeExecuteNonResult(EventExecutor executor,final NonResultLocalRunner localRunner) {
         Promise promise = new DefaultPromise(executor);
         if (executor.inEventLoop()) {
             runLocalWithoutPromise(localRunner);

@@ -84,12 +84,10 @@ public class TMessageDecoderPro extends ByteToMessageDecoder {
             THeader tHeader = serializeUtil.deserialize(header, THeader.class);
 
             GameMessage gameMessage = null;
-            if (dynamicRegisterGameService != null && tHeader.getType() != MessageType.AUTH.value && tHeader.getServiceId() < RequestMessageType.ASK_MASTER_CHANGE){
+            if (dynamicRegisterGameService != null  && tHeader.getServiceId() < RequestMessageType.ASK_MASTER_CHANGE){
                 gameMessage = dynamicRegisterGameService.getMessageInstance(MessageType.fromName(tHeader.getType()),tHeader.getServiceId());
-            }else if (tHeader.getType() == MessageType.RPCREQUEST.value){
-                gameMessage = new DefaultGameMessage();
             }else {
-                gameMessage = new DefaultResponseGameMessage();
+                gameMessage = new DefaultGameMessage();
             }
             gameMessage.setHeader(tHeader);
             if (!MasterInfo.checkIsMasterOrRecorder() && !RequestMessageType.checkIsCopyOrAuth(tHeader.getServiceId()) && !MasterInfo.checkIsRecorder() && !MessageType.checkIsAuthAndResponse(tHeader.getType()) ){

@@ -11,7 +11,6 @@ public interface GameMessage<T> {
     void setMessageData(T body);
     void readHeader(byte[] header);
     void copyHeadData(THeader tHeader);
-    T deserialzeToData();
     T deserialzeToData(Class<T> t);
     THeader getHeader();
 

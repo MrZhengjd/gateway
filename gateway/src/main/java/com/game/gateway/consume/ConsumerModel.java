@@ -9,7 +9,7 @@ import com.game.common.model.MessageSendType;
 import com.game.common.util.MessageKeyUtil;
 import com.game.domain.consumer.SendMessageModel;
 import com.game.domain.find.FindPlayerId;
-import com.game.domain.messagedispatch.GameMessageDispatchService;
+import com.game.common.messagedispatch.GameMessageDispatchService;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.Promise;

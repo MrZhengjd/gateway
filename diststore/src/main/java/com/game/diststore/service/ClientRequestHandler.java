@@ -9,8 +9,8 @@ import com.game.common.serialize.DataSerialize;
 import com.game.common.serialize.DataSerializeFactory;
 import com.game.diststore.store.UnLockQueueOneInstance;
 import com.game.diststore.util.BackupUtil;
-import com.game.domain.messagedispatch.GameDispatchService;
-import com.game.domain.messagedispatch.GameMessageListener;
+import com.game.common.messagedispatch.GameDispatchService;
+import com.game.common.messagedispatch.GameMessageListener;
 import com.game.domain.model.msg.AskMasterResponse;
 import com.game.domain.model.msg.ChangeRecorderResponse;
 import com.game.domain.model.vo.ChangeVo;
@@ -37,9 +37,10 @@ public class ClientRequestHandler {
     private BackupUtil backupUtil;
     @GameMessageListener(value = ChangeRecorderResponse.class)
     public void handle(ChangeRecorderResponse changeRecorderRequest){
-        ResponseVo deserialize = (ResponseVo) changeRecorderRequest.deserialzeToData();
+        ResponseVo deserialize = (ResponseVo) changeRecorderRequest.deserialzeToData(ResponseVo.class);
 //        BaseChuPaiInfo deserialize = chuPaiMessage.getData();
         if (deserialize.getCode() != ResultStatus.SUCCESS.getValue()){
+            logger.info("failed------------");
             return;
         }
         ChangeVo changeVo = (ChangeVo) deserialize.getData();
@@ -63,7 +64,7 @@ public class ClientRequestHandler {
      */
     @GameMessageListener(value = AskCopyInfoResponse.class)
     public void handleAskCopyInfo(AskCopyInfoResponse copyMessageRequest){
-        ResponseVo result = (ResponseVo) copyMessageRequest.deserialzeToData();
+        ResponseVo result = (ResponseVo) copyMessageRequest.deserialzeToData(ResponseVo.class);
 //        System.out.println("here is the request ask for copyinfo");
         if (result.getCode() != ResultStatus.SUCCESS.getValue()){
             return;
@@ -84,7 +85,7 @@ public class ClientRequestHandler {
     }
     @GameMessageListener(value = AskMasterResponse.class)
     public void handleAskMaster(AskMasterResponse changeRecorderRequest){
-        ResponseVo deserialize = (ResponseVo) changeRecorderRequest.deserialzeToData();
+        ResponseVo deserialize = (ResponseVo) changeRecorderRequest.deserialzeToData(ResponseVo.class);
         if (deserialize.getCode() != ResultStatus.SUCCESS.getValue()){
             return;
         }
@@ -95,7 +96,7 @@ public class ClientRequestHandler {
 
     @GameMessageListener(value = BandSupplyResponse.class)
     public void handleBandMessage(BandSupplyResponse bandSupplyResponse){
-        ResponseVo deserialize = (ResponseVo) bandSupplyResponse.deserialzeToData();
+        ResponseVo deserialize = (ResponseVo) bandSupplyResponse.deserialzeToData(ResponseVo.class);
         if (deserialize.getCode() != ResultStatus.SUCCESS.getValue()){
             return;
         }

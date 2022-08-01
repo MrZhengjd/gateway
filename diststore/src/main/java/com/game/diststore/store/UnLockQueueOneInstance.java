@@ -42,7 +42,13 @@ public class UnLockQueueOneInstance {
     private LockQueueMediator masterChangeMediato;
 
     public LockQueueMediator getMasterChangeMediato() {
-        return masterChangeMediato;
+        synchronized (DATA_BACKUP_PATH.intern()){
+            if (!inital){
+                init();
+            }
+            return masterChangeMediato;
+        }
+
     }
 
     private Long count = 0l;
@@ -66,10 +72,13 @@ public class UnLockQueueOneInstance {
     }
 
     public LockQueueMediator getMediator() {
-        if (!inital){
-           init();
+        synchronized (DATA_BACKUP_PATH.intern()){
+            if (!inital){
+                init();
+            }
+            return mediator;
         }
-        return mediator;
+
     }
 
     public static UnLockQueueOneInstance INSTANCE = null;

@@ -331,6 +331,10 @@ public class UnLockWALQueue {
 
     }
 
+    public int getWritePosition() {
+        return writePosition;
+    }
+
     private TempResult pullSuccess1() {
 //        lockRead(differ);
 //        boolean b = lockCommon(false);

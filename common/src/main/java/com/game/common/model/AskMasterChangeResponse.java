@@ -10,6 +10,6 @@ import lombok.Setter;
 @HeaderAnno(serviceId = RequestMessageType.ASK_MASTER_CHANGE,messageType = MessageType.RPCRESPONSE)
 @Getter
 @Setter
-public class AskMasterChangeResponse extends DefaultResponseGameMessage {
+public class AskMasterChangeResponse extends DefaultGameMessage {
     private Long lastCopyId;
 }

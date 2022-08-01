@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -19,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
 @Component
 public class BackupUtil {
 
-    private Map<String , CountDownLatch> countDownLatchMap = new HashMap<>();
+    private Map<String , CountDownLatch> countDownLatchMap = new ConcurrentHashMap<>();
     private Map<String , SelectInfo> selectInfoMap = new HashMap<>();
     private Map<String , List<CopyInfo>> nodeInfoMap = new HashMap<>();
     private ReadWriteLockOperate readWriteLockOperate = new ReadWriteLockOperate();

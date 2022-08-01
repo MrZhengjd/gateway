@@ -66,7 +66,7 @@ public class DynamicRegisterGameService {
         return gameMessage;
     }
     public GameMessage getDefaultResponse(Integer serviceId){
-        GameMessage gameMessage = new DefaultResponseGameMessage();
+        GameMessage gameMessage = new DefaultGameMessage();
         gameMessage.getHeader().setType(MessageType.RPCRESPONSE.value);
         gameMessage.getHeader().setServiceId(serviceId);
         return gameMessage;

@@ -2,6 +2,7 @@ package com.game.gateway.server.handler;
 
 
 import com.game.common.constant.Constants;
+import com.game.common.constant.RequestMessageType;
 import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.eventdispatch.EventAnnotationManager;
 import com.game.common.model.*;
@@ -105,7 +106,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, GameMessage message) throws Exception {
 //        Message message = (Message) msg;
-        if (message.getHeader().getType() == MessageType.AUTH.getValue()){
+        if (message.getHeader().getServiceId() == RequestMessageType.AUTH_REQUEST){
 //            Body body = (Body) message.getBody();
 //            String token = body.getMessage().toString();
 //            String token = dataSerialize.deserialize(message.getData(),String.class);

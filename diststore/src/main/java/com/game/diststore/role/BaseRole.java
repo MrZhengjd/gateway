@@ -5,7 +5,7 @@ import com.game.common.eventdispatch.DynamicRegisterGameService;
 import com.game.common.util.TopicUtil;
 import com.game.diststore.server.GameServerBoot;
 import com.game.diststore.service.RecordComponent;
-import com.game.domain.messagedispatch.GameMessageDispatchService;
+import com.game.common.messagedispatch.GameMessageDispatchService;
 import com.game.network.cache.ChannelMap;
 import com.game.network.server.SuccessHandle;
 import io.netty.channel.ChannelInitializer;

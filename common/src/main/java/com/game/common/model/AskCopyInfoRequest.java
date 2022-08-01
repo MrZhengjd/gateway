@@ -11,8 +11,4 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AskCopyInfoRequest extends DefaultGameMessage {
-    @Override
-    protected Class getBodyObjClass() {
-        return String.class;
-    }
 }

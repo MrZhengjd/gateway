@@ -10,6 +10,6 @@ import lombok.Setter;
 @HeaderAnno(serviceId = RequestMessageType.ASK_COPY_ID,messageType = MessageType.RPCRESPONSE)
 @Getter
 @Setter
-public class AskCopyInfoResponse extends DefaultResponseGameMessage {
+public class AskCopyInfoResponse extends DefaultGameMessage {
 
 }

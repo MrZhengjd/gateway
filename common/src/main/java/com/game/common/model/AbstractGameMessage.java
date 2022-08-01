@@ -71,21 +71,11 @@ public abstract class AbstractGameMessage<T> implements GameMessage<T> {
         }
     }
 
-    @Override
-    public T deserialzeToData() {
-        try {
-            return dataSerialize.deserialize(getData(),getBodyObjClass());
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
 
-    }
 
     public T getMessage() {
         return message;
     }
-    protected abstract Class<T> getBodyObjClass();
 
     public void setMessage(T message) {
         this.message = message;

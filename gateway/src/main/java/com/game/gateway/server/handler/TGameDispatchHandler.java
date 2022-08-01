@@ -99,7 +99,9 @@ public class TGameDispatchHandler extends SimpleChannelInboundHandler<GameMessag
         PromiseUtil.safeExecuteWithKey(key, new LocalRunner<Integer>() {
             @Override
             public void task(Promise promise, Integer object) {
+
                 Integer server = playerInstanceModel.selectServerId(playerId, moduleId);
+                log.info("here is receive message "+server);
                 if (server != null){
                     promise.setSuccess(server);
                 }else {

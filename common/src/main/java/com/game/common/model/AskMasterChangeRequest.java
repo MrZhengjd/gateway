@@ -13,8 +13,4 @@ import lombok.Setter;
 public class AskMasterChangeRequest extends DefaultGameMessage {
     private Long lastCopyId = 0l;
 
-    @Override
-    protected Class getBodyObjClass() {
-        return Long.class;
-    }
 }

@@ -100,14 +100,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
         ctx.fireChannelInactive();
     }
 
-//    @Override
-//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-//
-//        super.exceptionCaught(ctx, cause);
-//        if (ctx.channel().isActive()){
-//            ctx.close();
-//        }
-//    }
+
 
 
     @Override
@@ -119,7 +112,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
 //            String token = body.getMessage().toString();
 //            String token = dataSerialize.deserialize(message.getData(),String.class);
 //            String token = dataSerialize.deserialize(message.getData(),String.class);
-            String token = (String) message.deserialzeToData();
+            String token = (String) message.deserialzeToData(String.class);
             if (StringUtils.isEmpty(token)){
                 logger.info("token is empty close it----");
                 ctx.close();
@@ -160,11 +153,6 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
                     }
                  });
 
-//                ctx.fireChannelRead(message);
-                //后面可以写发送消息给各个服务器通知玩家的已经登录成功了
-//                String ip = AddressUtil.getRemoteIP(ctx.channel());
-//                sendConnectStatusMsg(true,ctx.executor(),ip);
-//                ctx.close();
             }catch (Exception e){
                 logger.info("here is error ------------");
                 e.printStackTrace();
@@ -207,10 +195,7 @@ public class ConfirmHandler extends SimpleChannelInboundHandler<GameMessage> {
             }
             Channel exist = playerChannel.getChannel();
             if (exist != null){
-//
-
                 exist.close();
-
 
             }
         }

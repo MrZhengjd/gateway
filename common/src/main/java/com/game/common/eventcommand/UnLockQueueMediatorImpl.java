@@ -161,21 +161,21 @@ public class UnLockQueueMediatorImpl extends LockQueueMediator {
     @Override
     public void rollback() {
 //        System.out.println("there show hashcode -- "+this.getUnLockQueue().getExecutor().hashCode());
-        PromiseUtil.safeExecute(dataUnLockQueue.getExecutor(), new LocalRunner() {
-            @Override
-            public void task(Promise promise, Object object) {
-                if (!rollback){
-                    rollback = true;
-                    rotatePoll();
+//        PromiseUtil.safeExecute(dataUnLockQueue.getExecutor(), new LocalRunner() {
+//            @Override
+//            public void task(Promise promise, Object object) {
+//
+//            }
+//        },null);
+
+        if (!rollback){
+            rollback = true;
+            rotatePoll();
 //                    System.out.println("here use executor "+unLockQueue.getExecutor().hashCode());
-                    rollback = false;
-                    finishrollback = true;
-                    promise.setSuccess(true);
-                }
-            }
-        },null);
-
-
+            rollback = false;
+            finishrollback = true;
+//            promise.setSuccess(true);
+        }
 
 
 //
@@ -204,7 +204,7 @@ public class UnLockQueueMediatorImpl extends LockQueueMediator {
     }
 
     @Override
-    public Promise<IEvent> getNextEvent(Long key) {
+    public Promise<IEvent> getNextEvent(long key,long endKey) {
         return PromiseUtil.safeExecute(dataUnLockQueue.getExecutor(), new LocalRunner<Long>() {
             @Override
             public void task(Promise promise, Long key) {
@@ -212,10 +212,14 @@ public class UnLockQueueMediatorImpl extends LockQueueMediator {
                 if (holdMap.containsKey(key)){
                     key = key + 1;
                 }
-                IEvent fromDisk = getNextKey(key);
-                promise.setSuccess(fromDisk);
-                if (fromDisk != null){
-                    log.info("here is copy id to "+fromDisk.getEventId());
+                IEvent e = null;
+                if (key < endKey && endKey > 0){
+                    e = getNextKey(key);
+                }
+
+                promise.setSuccess(e);
+                if (e != null){
+                    log.info("here is copy id to "+e.getEventId());
                 }
             }
         },key);
