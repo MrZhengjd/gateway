@@ -38,6 +38,7 @@ import io.netty.util.concurrent.Promise;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import sun.misc.Contended;
 
@@ -55,8 +56,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RecordComponent {
 
     private static Logger logger = LoggerFactory.getLogger(RecordComponent.class);
-    public static final String configPath0 = System.getProperty("user.dir") + File.separator + "diststore" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator;
+//    public static final String configPath0 = System.getProperty("user.dir") + File.separator + "diststore" + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator;
     private DataSerialize dataSerialize = DataSerializeFactory.getInstance().getDefaultDataSerialize();
+    private static ClassPathResource classPathResource = new ClassPathResource("data");
     private IdGenerator idGenerator = IdGeneratorFactory.getDefaultGenerator();
     //    private EventExecutor scheduledExecutorService = new DefaultEventExecutor();
     private Map<String, NodeInfo> nodeMap = new HashMap<>();
@@ -65,7 +67,7 @@ public class RecordComponent {
     private SortedMap<Long, MasterChangeInfo> masterChangeMap = new TreeMap<>();
     private ReadWriteLockOperate lockUtil = new ReadWriteLockOperate();
     private AtomicInteger nodeId = new AtomicInteger(1);
-    private Index pageIndex = new DefaultIndex("recorder", configPath0 + "recorder", 1);
+    private Index pageIndex = new DefaultIndex("recorder", classPathResource.getPath() +File.separator+ "recorder", 1);
     //    private UnLockWALQueue masterChangeQueue = UnLockQueueOneInstance.getInstance().getMasterChangeQueue();
     private ThreadLocalRandom random = ThreadLocalRandom.current();
 
@@ -351,49 +353,44 @@ public class RecordComponent {
      * @param selectData
      */
     public void selectMaster(List<CopyInfo> selectData, String key) {
-        lockUtil.writeLockOperation(new Operation() {
-            @Override
-            public void operate() {
-                SelectInfo selectInfo = backupUtil.getSelectInfo(key);
-                if (selectInfo == null || selectInfo.getStatus() == 1) {
-                    changingMaster = false;
-                    return;
-                }
+        SelectInfo selectInfo = backupUtil.getSelectInfo(key);
+        if (selectInfo == null || selectInfo.getStatus() == 1) {
+            changingMaster = false;
+            return;
+        }
 
-                selectInfo.setStatus(1);
-                if (selectData == null || selectData.isEmpty()) {
-                    changingMaster = false;
-                    return;
-                }
-                int keyIndex = random.nextInt(selectData.size()) - 1;
-                if (keyIndex < 0) {
-                    keyIndex = 0;
-                }
-                CopyInfo nodeInfo = selectData.get(keyIndex);
-                if (nodeInfo == null) {
-                    changingMaster = false;
-                    return;
-                }
-                nodeInfo.setOperateId(lastOperateId);
-                masterOffLine = false;
-                master = nodeMap.get(nodeInfo.getNodeInfo());
-                master.setNodeId(nodeId.incrementAndGet());
-                MasterChangeInfo masterInfo = new MasterChangeInfo();
-                masterInfo.setCopyInfo(nodeInfo);
-                masterInfo.setSelectId(selectId.get());
-                master.setSelectId(selectId.get());
-                IEvent masterEvent = getCreateEvent(masterInfo);
-                masterEvent.setEventId(lastOperateId);
-                masterChangeMap.put(lastOperateId, masterInfo);
-                masterChangeMediator.execute(masterEvent);
-                master.setLatestOperateId(lastOperateId);
+        selectInfo.setStatus(1);
+        if (selectData == null || selectData.isEmpty()) {
+            changingMaster = false;
+            return;
+        }
+        int keyIndex = random.nextInt(selectData.size()) - 1;
+        if (keyIndex < 0) {
+            keyIndex = 0;
+        }
+        CopyInfo nodeInfo = selectData.get(keyIndex);
+        if (nodeInfo == null) {
+            changingMaster = false;
+            return;
+        }
+        nodeInfo.setOperateId(lastOperateId);
+        masterOffLine = false;
+        master = nodeMap.get(nodeInfo.getNodeInfo());
+        master.setNodeId(nodeId.incrementAndGet());
+        MasterChangeInfo masterInfo = new MasterChangeInfo();
+        masterInfo.setCopyInfo(nodeInfo);
+        masterInfo.setSelectId(selectId.get());
+        master.setSelectId(selectId.get());
+        IEvent masterEvent = getCreateEvent(masterInfo);
+        masterEvent.setEventId(lastOperateId);
+        masterChangeMap.put(lastOperateId, masterInfo);
+        masterChangeMediator.execute(masterEvent);
+        master.setLatestOperateId(lastOperateId);
 //                masterChangeQueue.offerData(dataSerialize.serialize(masterInfo));
-                changingMaster = false;
-                backupUtil.removeKey(key);
-                System.out.println("auto select master to " + master + "/n finish time " + System.currentTimeMillis());
+        changingMaster = false;
+        backupUtil.removeKey(key);
+        System.out.println("auto select master to " + master + "/n finish time " + System.currentTimeMillis());
 
-            }
-        });
 
     }
 

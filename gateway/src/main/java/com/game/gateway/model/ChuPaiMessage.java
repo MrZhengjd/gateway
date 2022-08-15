@@ -13,8 +13,5 @@ import lombok.Setter;
 @Setter
 public class ChuPaiMessage extends DefaultGameMessage {
     private BaseChuPaiInfo chuPaiInfo;
-    @Override
-    protected Class getBodyObjClass() {
-        return BaseChuPaiInfo.class;
-    }
+
 }

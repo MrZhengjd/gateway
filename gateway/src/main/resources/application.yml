@@ -6,7 +6,7 @@ nacos:
 
 spring :
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 10.0.8.17:9092
     producer:
       retries: 3
       batch-size: 16384 #16K

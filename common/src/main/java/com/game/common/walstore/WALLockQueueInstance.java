@@ -7,6 +7,7 @@ import com.game.common.store.TempResult;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.util.concurrent.Executors;
@@ -21,8 +22,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 public class WALLockQueueInstance {
     private static Logger logger = LoggerFactory.getLogger(WALLockQueueInstance.class);
-    public static final String configPath0 = System.getProperty("user.dir")+File.separator+"src"+File.separator+"main"+File.separator;
-
+//    public static final String configPath0 = System.getProperty("user.dir")+File.separator+"src"+File.separator+"main"+File.separator;
+    private static ClassPathResource classPathResource = new ClassPathResource("data");
     public static final String DEFAULT_DATA_PATH = "data";
     public static final String DATA_BACKUP_PATH = "/backup";
 //    private static final BlockingQueue<String> QUEUE = new LinkedBlockingQueue<>();
@@ -154,7 +155,7 @@ public class WALLockQueueInstance {
         return ConsumerQueuePoolHolder.pool;
     }
     private WALLockQueueInstance(){
-        this.filePath = configPath0 + DEFAULT_DATA_PATH;
+        this.filePath = classPathResource.getPath();
         File file = new File(filePath);
         if (!file.exists()){
             file.mkdirs();

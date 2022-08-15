@@ -424,6 +424,10 @@ public class QueueBlock {
         this.path = path;
         try {
             File file = new File(path);
+            if (!file.exists()){
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
             this.accessFile = new RandomAccessFile(file,"rw");
             this.fileChannel = accessFile.getChannel();
             this.mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRITE,0,BLOCK_SIZE);

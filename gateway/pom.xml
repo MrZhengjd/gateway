@@ -18,11 +18,7 @@
             <artifactId>nacos-config-spring-boot-starter</artifactId>
             <version>0.2.3</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.boot</groupId>-->
-<!--            <artifactId>nacos-discovery-spring-boot-starter</artifactId>-->
-<!--            <version>0.2.3</version>-->
-<!--        </dependency>-->
+
         <dependency>
             <groupId>com.game</groupId>
             <artifactId>network</artifactId>
@@ -36,20 +32,51 @@
 
         </dependency>
 
-<!--        <dependency>&lt;!&ndash; 引用Spring Cloud Bus依赖的消息队列，kafka &ndash;&gt;-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-bus-kafka</artifactId>-->
-<!--&lt;!&ndash;            <version>2.4.0.RELEASE</version>&ndash;&gt;-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
             <version>2.5.1.RELEASE</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.kafka</groupId>-->
-<!--            <artifactId>kafka-clients</artifactId>-->
-<!--            <version>2.5.1.RELEASE</version>-->
-<!--        </dependency>-->
+
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.game.gateway.GatewayApplication</mainClass>
+                </configuration>
+
+            </plugin>
+
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.yml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.yml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
 </project>

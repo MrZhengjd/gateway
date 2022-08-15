@@ -2,7 +2,7 @@ package hello.redisson;
 
 
 
-import com.game.common.relation.room.Room;
+import com.game.domain.relation.room.Room;
 import org.redisson.Redisson;
 import org.redisson.api.LocalCachedMapOptions;
 import org.redisson.api.RLocalCachedMap;

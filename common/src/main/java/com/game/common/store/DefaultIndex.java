@@ -48,6 +48,11 @@ public class DefaultIndex implements Index {
                 this.index = fileChannel.map(FileChannel.MapMode.READ_WRITE,0,INDEX_SIZE);
                 this.index = index.load();
             }else {
+                if (!file.isDirectory()){
+                    file.getParentFile().mkdirs();
+                }
+                file.createNewFile();
+
                 this.accessFile = new RandomAccessFile(file,"rw");
                 this.fileChannel = accessFile.getChannel();
                 this.index = fileChannel.map(FileChannel.MapMode.READ_WRITE,0,INDEX_SIZE);

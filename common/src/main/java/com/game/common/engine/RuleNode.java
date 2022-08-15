@@ -5,6 +5,8 @@ public abstract class RuleNode {
     protected Long nodeId;
     //叶子 1节点2
     protected int nodeType;
+    // 0 所有的子项目里面挑选一个执行 1所有的子项目
+
 //    protected boolean special;
     //规则字段
     protected String key;
@@ -48,6 +50,5 @@ public abstract class RuleNode {
     public void setNodeId(Long nodeId) {
         this.nodeId = nodeId;
     }
-
 
 }

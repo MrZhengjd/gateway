@@ -12,6 +12,7 @@ import io.netty.util.concurrent.EventExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.util.HashMap;
@@ -28,7 +29,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 public class UnLockWALQueueInstance {
     private static Logger logger = LoggerFactory.getLogger(UnLockWALQueueInstance.class);
-    public static final String configPath0 = System.getProperty("user.dir")+File.separator+"src"+File.separator+"target"+File.separator;
+    private static ClassPathResource classPathResource = new ClassPathResource("data");
+//    public static final String configPath0 = System.getProperty("user.dir")+File.separator+"src"+File.separator+"target"+File.separator;
     public static final Integer DEFAULT_POOL_COUNT = 4;
     public static final String DEFAULT_DATA_PATH = "data/";
     public static final String DATA_BACKUP_PATH = "/backup";
@@ -170,7 +172,7 @@ public class UnLockWALQueueInstance {
                     mediators = new UnLockQueueMediatorImpl[poolsCount];
 //                    IGameEventExecutorGroup gameEventExecutorGroup = new IGameEventExecutorGroup(poolsCount,null);
                     for (int i = 0;i<poolsCount;i++){
-                        this.filePath = configPath0 + DEFAULT_DATA_PATH+i;
+                        this.filePath = classPathResource.getPath() + "/"+i;
                         File file = new File(filePath);
                         if (!file.exists()){
                             file.mkdirs();

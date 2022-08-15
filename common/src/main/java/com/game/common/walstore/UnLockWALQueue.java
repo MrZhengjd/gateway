@@ -162,6 +162,10 @@ public class UnLockWALQueue {
 //        for (int i = 0;i<MAX_BLOCK;i++){
 //            pageIndices[i] = new DefaultPageIndex(name, dir, i );
 //        }
+        File file = new File(dir);
+        if (!file.exists()){
+            file.mkdirs();
+        }
         currentWritePage = 0;
         currentReadPage = 0;
         readWriteSame=true;

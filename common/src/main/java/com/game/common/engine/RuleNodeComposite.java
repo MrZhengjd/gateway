@@ -6,7 +6,14 @@ public class RuleNodeComposite extends RuleNode {
     private String desc;
     //计算方式 ；1:=;2:>;3:<;4:>=;5<=;6:enum[枚举范围]
     private int calType;
+    protected SelectorEnum selectType = SelectorEnum.Selector;
+    public SelectorEnum getSelectType() {
+        return selectType;
+    }
 
+    public void setSelectType(SelectorEnum selectType) {
+        this.selectType = selectType;
+    }
     //值
     private Object limitVal;
 
